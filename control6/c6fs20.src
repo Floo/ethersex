@@ -1,0 +1,35 @@
+uint16_t udp_count = 0;
+uint8_t tastenTimerLaeuft = 0;
+
+CONTROL_START
+
+  PIN_INPUT(TASTER)
+
+  ON PIN_FALLING(TASTER) DO
+      DEBUG("TASTER_FALLING");
+      TIMER_START(tastenTimer)
+      tastenTimerLaeuft = 1;
+      DEBUG("start Timer");
+  END
+
+  ON PIN_RISING(TASTER) DO
+      DEBUG("TASTER_RISING");
+      ON tastenTimerLaeuft != 0 DO
+        DEBUG("Taste kurz")
+        tastenTimerLaeuft = 0;
+        UESEND(192.168.178.22, "%05u TASTER KURZ \n", udp_count++);
+      END
+  END
+
+  ON tastenTimerLaeuft != 0 DO
+      ON TIMER(tastenTimer) > 3 DO
+        DEBUG("Taste lang")
+        tastenTimerLaeuft = 0;
+        UESEND(192.168.178.22, "%05u TASTER LANG \n", udp_count++);
+      END
+  END
+
+CONTROL_END
+
+
+

@@ -42,26 +42,33 @@
 
 /* zero is 400uS: F_CPU/10^6 * 400 = 8000, with prescaler 128 gives 62.5
  * -> test if value is between 33 and 73 */
-#define FS20_PULSE_ZERO(x) FS20_BETWEEN((x), 33, 73)
+//#define FS20_PULSE_ZERO(x) FS20_BETWEEN((x), 33, 73)
+#define FS20_PULSE_ZERO(x) FS20_BETWEEN((x), 25, 60)
 /* one is 600uS: F_CPU/10^6 * 600 = 12000, with prescaler 128 gives 93.75
  * -> test if value is between 74 and 105 */
-#define FS20_PULSE_ONE(x) FS20_BETWEEN((x), 74, 105)
+//#define FS20_PULSE_ONE(x) FS20_BETWEEN((x), 74, 105)
+#define FS20_PULSE_ONE(x) FS20_BETWEEN((x), 61, 87)
 /* maximal difference between two pulses is 115.2 uS,
  * which means 18 timer cycles with prescaler 128 */
-#define FS20_PULSE_DIFFERENCE(x,y) FS20_SYMM(x, y, 68)
+//#define FS20_PULSE_DIFFERENCE(x,y) FS20_SYMM(x, y, 68)
+#define FS20_PULSE_DIFFERENCE(x,y) FS20_SYMM(x, y, 54)
 
 
 /* ws300 timing: */
 
 /* one is a short pulse, followed by a long pulse */
-#define WS300_PULSE_ONE(x,y)  (FS20_BETWEEN((x), 20, 80) && FS20_BETWEEN((y), 90, 180))
+//#define WS300_PULSE_ONE(x,y)  (FS20_BETWEEN((x), 20, 80) && FS20_BETWEEN((y), 90, 180))
+#define WS300_PULSE_ONE(x,y)  (FS20_BETWEEN((x), 20, 70) && FS20_BETWEEN((y), 80, 160))
 /* zero is a long pulse, followed by a short pulse */
-#define WS300_PULSE_ZERO(x,y) (FS20_BETWEEN((x), 90, 180) && FS20_BETWEEN((y), 20, 80))
+//#define WS300_PULSE_ZERO(x,y) (FS20_BETWEEN((x), 90, 180) && FS20_BETWEEN((y), 20, 80))
+#define WS300_PULSE_ZERO(x,y) (FS20_BETWEEN((x), 80, 160) && FS20_BETWEEN((y), 20, 70))
 
 /* test if the received value might be a valid ws300 timing */
-#define WS300_VALID_VALUE(x) FS20_BETWEEN((x), 20, 180)
+//#define WS300_VALID_VALUE(x) FS20_BETWEEN((x), 20, 180)
+#define WS300_VALID_VALUE(x) FS20_BETWEEN((x), 20, 160)
 /* test if two adjacent timings might be a valid ws300 timing */
-#define WS300_VALID_VALUES(x, y) FS20_BETWEEN((x)+(y), 110, 260)
+//#define WS300_VALID_VALUES(x, y) FS20_BETWEEN((x)+(y), 110, 260)
+#define WS300_VALID_VALUES(x, y) FS20_BETWEEN((x)+(y), 100, 230)
 
 
 /* a fs20 datagram consists of 58 bits */

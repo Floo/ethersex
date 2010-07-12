@@ -10,7 +10,7 @@
 *.hex
 *.bin
 *.workspace
-*.cbp
+# *.cbp
 *.layout
 
 # make generated files
