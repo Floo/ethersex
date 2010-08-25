@@ -20,127 +20,33 @@
 * http://www.gnu.org/copyleft/gpl.html
 */
 
-#include "core/debug.h"
+#include <stdlib.h>
 #include "rec868.h"
+#include "protocols/ecmd/sender/ecmd_sender_net.h"
+
 
 volatile struct rec868_global_t rec868_global;
-
-void rec868_process(void)
-{
-    uint8_t i = 0;
-    uint8_t sum;
-    uint8_t chk = 0;
-    if (rec868_global.kommando == REC868_REC_WETT)
-    {
-        sum = 5;
-        do
-        {
-            chk ^= rec868_global.wsseq[i];
-            sum += rec868_global.wsseq[i++];
-            if (i == rec868_global.wssend - 2)
-            {
-                if (chk != rec868_global.wsseq[rec868_global.wssend - 2])
-                {
-                    // Checksummmenfehler
-                    i = 0;
-                    start_Rec();
-                    break;
-                }
-            }
-            if (i == rec868_global.wssend - 1)
-            {
-                if ((sum & 0x0F) != rec868_global.wsseq[rec868_global.wssend - 1])
-                {
-                    // Checksummmenfehler
-                    i = 0;
-                    start_Rec();
-                    break;
-                }
-            }
-        }
-        while(i < rec868_global.wssend - 1);
-
-        if (i > 0)
-        {
-            if (((rec868_global.wsseq[0] & 0x07) == 7) && rec868_global.stat.wett)  // Typ == KS300
-            {
-                out_Wett();//in Ausgabeformat umwandeln
-                rec868_global.kommando = REC868_TX_WETT;
-            }
-            else if (((rec868_global.wsseq[0] & 0x07) == 1) && rec868_global.stat.hell)   // Typ == Thermo/Hygro (AS2000)
-            {
-                out_Hell();//in Ausgabeformat umwandeln
-                rec868_global.kommando = REC868_TX_HELL;
-            }
-            else start_Rec();
-            rec868_global.kommando = REC868_CLR;
-        }
-    }
-
-    if (rec868_global.kommando == REC868_REC_FS20)
-    {
-        sum = 6;
-
-        do
-        {
-            sum += rec868_global.fsseq[i++];
-        }
-        while(i < rec868_global.fssend - 1);
-        if ((rec868_global.fsseq[i] == sum) && rec868_global.stat.fs20)
-        {
-            //Checksumme und STAT-Flag müssen stimmen
-            out_FS20(); //in Ausgabeformat umwandeln
-            rec868_global.kommando = REC868_TX_FS20;
-        }
-        else
-        {
-            start_Rec(); // keine UDP-Ausgabe
-            rec868_global.kommando = REC868_CLR;
-        }
-    }
-    if(rec868_global.kommando > 0xF0)
-    {
-        switch(rec868_global.kommando)
-        {
-            case (REC868_TX_FS20):
-                //UDP Senden FS20
-                debug_printf("FS20 empfangen");
-            case (REC868_TX_WETT):
-                //UDP Senden WETTER
-                debug_printf("KS300 empfangen");
-            case (REC868_TX_HELL):
-                //UDP Senden HELL
-                debug_printf("AS2000 empfangen");
-        }
-        start_Rec();
-    }
-}
-
-void rec868_init(void)
-{
-    //benoetigte Funktionen aktivieren
-    rec868_global.stat.wett = TRUE;
-    rec868_global.stat.hell = TRUE;
-    rec868_global.stat.fs20 = TRUE;
-    init_Rec();
-    start_Rec();
-}
-
-/******* Pin-Change-Interrupt für Empfang freigeben *********/
-
-void start_Rec(void)
-{
-    rec868_global.kommando = REC868_CLR;
-    PCIFR |= _BV(PCIF3); // anstehende Interrupts löschen
-    PCICR |= _BV(PCIE3); // Enable PinChangeInterrupt
-}
-
+extern uint16_t udp_count;
 
 /******* empfangene FS20-Sequenz in Ausgabeformat umwandeln *********/
 
 void out_FS20(void)
 {
-    rec868_global.txFS20[0] = rec868_global.fsseq[2]; // Adresse
+    uint8_t len;
+    char *buf;
+    uip_ipaddr_t ip;
+    uip_ipaddr(&ip, 192, 168, 178, 22);
+
+    if (!(rec868_global.fsseq[3] & 0x20)){  //Erweiterundbit nicht gesetzt
+        rec868_global.fsseq[4] = 0;
+    }
+    len = 19;
+    buf = malloc(len);
+    snprintf(buf, len, "%05u F%02X%02X%02X%02X%02X\n", udp_count++, rec868_global.fsseq[0], rec868_global.fsseq[1],
+                rec868_global.fsseq[2], rec868_global.fsseq[3], rec868_global.fsseq[4]);
+    if (buf != 0)
+        uecmd_sender_send_command(&ip, buf, NULL);
+/*    rec868_global.txFS20[0] = rec868_global.fsseq[2]; // Adresse
     rec868_global.txFS20[1] = rec868_global.fsseq[3]; // Befehl_1
     if (rec868_global.fsseq[3] & 0x20)  //Erweiterundbit gesetzt
     {
@@ -149,7 +55,7 @@ void out_FS20(void)
     else
     {
         rec868_global.txFS20[2] = 0;
-    }
+    }*/
 }
 
 /******* empfangene Wetter-Sequenz in Ausgabeformat umwandeln *********/
@@ -196,6 +102,113 @@ void out_Hell(void)
 
 }
 
+
+void rec868_process(void)
+{
+    uint8_t i = 0;
+    uint8_t sum;
+    uint8_t chk = 0;
+    if (rec868_global.kommando == REC868_REC_WETT)
+    {
+        sum = 5;
+        do
+        {
+            chk ^= rec868_global.wsseq[i];
+            sum += rec868_global.wsseq[i++];
+            if (i == rec868_global.wssend - 2)
+            {
+                if (chk != rec868_global.wsseq[rec868_global.wssend - 2])
+                {
+                    // Checksummmenfehler
+                    debug_printf("Checksummenfehler\n");
+                    i = 0;
+                    start_Rec();
+                    break;
+                }
+            }
+            if (i == rec868_global.wssend - 1)
+            {
+                if ((sum & 0x0F) != rec868_global.wsseq[rec868_global.wssend - 1])
+                {
+                    // Checksummmenfehler
+                    debug_printf("Checksummenfehler\n");
+                    i = 0;
+                    start_Rec();
+                    break;
+                }
+            }
+        }
+        while(i < rec868_global.wssend - 1);
+
+        if (i > 0)
+        {
+            if (((rec868_global.wsseq[0] & 0x07) == 7) && rec868_global.stat.wett)  // Typ == KS300
+            {
+                debug_printf("KS300_Sequenz wird gesendet...\n");
+                out_Wett();//per UDP rauschicken
+            }
+            else if (((rec868_global.wsseq[0] & 0x07) == 1) && rec868_global.stat.hell)   // Typ == Thermo/Hygro (AS2000)
+            {
+                debug_printf("AS2000_Sequenz wird gesendet...\n");
+                out_Hell();//per UDP senden
+            }
+            start_Rec();
+            rec868_global.kommando = REC868_CLR;
+        }
+    }
+
+    if (rec868_global.kommando == REC868_REC_FS20)
+    {
+        sum = 6;
+
+        do
+        {
+            sum += rec868_global.fsseq[i++];
+        }
+        while(i < rec868_global.fssend - 1);
+        if ((rec868_global.fsseq[i] == sum) && rec868_global.stat.fs20) //Checksumme und STAT-Flag müssen stimmen
+        {
+            debug_printf("FS20_Sequenz wird gesendet...\n");
+            out_FS20(); //per UDP rausschicken
+        }
+        else
+        {
+            debug_printf("Checksummenfehler\n");
+        }
+        start_Rec();
+        rec868_global.kommando = REC868_CLR;
+    }
+}
+
+void rec868_stop(void)
+{
+    PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
+    ACSR &= ~_BV(ACIE); //Interrupt ANALOG_COMP sperren
+}
+
+void rec868_init(void)
+{
+    //benoetigte Funktionen aktivieren
+    rec868_global.stat.wett = TRUE;
+    rec868_global.stat.hell = TRUE;
+    rec868_global.stat.fs20 = TRUE;
+    init_Rec();
+    start_Rec();
+}
+
+/******* Pin-Change-Interrupt für Empfang freigeben *********/
+
+void start_Rec(void)
+{
+    PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
+    rec868_global.kommando = REC868_CLR;
+    ACSR &= ~_BV(ACI); //anstehende Interrupts löschen
+    ACSR |= _BV(ACIE); //Enable AnanlogComperatorInterrupt
+}
+
+
+
+
 /******* PinChangeInt für Empfang initialisieren *********/
 
 void init_Rec(void)
@@ -203,9 +216,10 @@ void init_Rec(void)
     rec868_global.fssend = 5;
     rec868_global.wssend = 10;
     ic_error(); // Variablen initialisieren
-    //Timer2 initialisieren
-    TCCR2A = 0; //NoramlMode
-    TCCR2B = _BV(CS22) | _BV(CS20); //Vorteiler: clk/128
+    //Timer0 initialisieren
+    TCCR0A = 0; //NormalMode
+    TCCR0B = _BV(CS02); //Vorteiler: clk/256
+    TIFR0 = 0;
     //PinChangeInt init
 
     //Pins ueber E6-Fkten festlegen
@@ -213,15 +227,19 @@ void init_Rec(void)
     //PCMSK3 = _BV(PCINT30); //PinChange fuer PCINT30 (PD6) freigeben
 
     /* configure port pin for use as input to the analoge comparator */
-    DDR_CONFIG_IN(FS20_RECV);
-    PIN_CLEAR(FS20_RECV);
+    //DDR_CONFIG_IN(FS20_RECV);
+    //PIN_CLEAR(FS20_RECV);
+    //Pins ueber E6-Fkten festlegen
+    DDRB &= ~(1<<PB3); //Pin PB3 als Eingang
+    PORTB &= ~(1<<PB3); //Clear PB3
+    //fuer Tests PB1 als Ausgang
+    DDRB |= (1<<PB1);
+    PORTB |= (1<<PB1);
     /* enable analog comparator,
      * use fixed voltage reference (1V, connected to AIN0)
-     * reset interrupt flag (ACI)
-     * enable interrupt
      * Reaktion auf Flanke je nach ACIS0-Wert
      */
-    ACSR = _BV(ACBG) | _BV(ACI) | _BV(ACIE) | _BV(ACIS1);
+    ACSR = _BV(ACBG) | _BV(ACIS1);
 }
 
 
@@ -230,14 +248,15 @@ void init_Rec(void)
 
 void ic_error(void)
 {
-/*    if (fsrec && !fspre)
+/*    if (rec868_global.fsrec && !rec868_global.fspre)
     {
-        PORTB |= _BV(PB5); // REC Signalisierung einschalten
+        PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
     }
-    if (wsrec && !wspre)
+    if (rec868_global.wsrec && !rec868_global.wspre)
     {
-        PORTB |= _BV(PB5); // REC Signalisierung einschalten
+        PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
     }*/
+    //PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
     rec868_global.fsrec = FALSE;
     rec868_global.wsrec = FALSE;
     rec868_global.fspre = FALSE;
@@ -271,8 +290,9 @@ void ic_up1(void)
         if (rec868_global.bytecount == rec868_global.fssend)
         {
             rec868_global.kommando = REC868_REC_FS20; // vollständige FS20-Sequenz empfangen
-            PCICR &= ~_BV(PCIE3); // Disable PinChangeInterrupt
+            rec868_stop(); // Disable AnalogCompInterrupt
             ic_error(); // alles rücksetzen
+            debug_printf("FS20-Sequenz empfangen\n");
         }
         return;
     }
@@ -310,8 +330,9 @@ void ic_up2(void)
     if (rec868_global.bytecount == rec868_global.wssend)
     {
         rec868_global.kommando = REC868_REC_WETT; // vollst. Wettersequenz empfangen
-        PCICR &= ~_BV(PCIE3); // Disable PinChangeInterrupt
+        rec868_stop(); // Disable AnalogCompInterrupt
         ic_error(); // alles rücksetzen
+        debug_printf("WS300-Sequenz empfangen\n");
     }
 }
 
@@ -322,23 +343,30 @@ void ic_up2(void)
 
 ISR(ANALOG_COMP_vect)
 {
-    rec868_global.ttemp = TCNT2; //Timerstand auslesen
-    if(bit_is_set(TIFR2, TOV2))
+    rec868_global.ttemp = TCNT0; //Timerstand auslesen
+
+    if(bit_is_set(TIFR0, TOV2))
     {
         rec868_global.ttemp = 0xFF; //Timer ist bereits uebergelaufen, also auf max setzen
-        TIFR2 = _BV(TOV2); //Overflow loeschen
+        TIFR0 = _BV(TOV2); //Overflow loeschen
     }
-    TCNT2 = 0; //Timer reset
+    TCNT0 = 0; //Timer reset
     ACSR ^= _BV(ACIS0); //ausloesende Flanke wechseln
-    if (ACSR & _BV(ACIS0))  // H/L-Flanke detektiert: ACIS0 gesetzt heisst fallende Flanke,
+    if (ACSR & _BV(ACIS0))  // L/H-Flanke detektiert: ACIS0 geloescht heisst steigende Flanke,
                             // da im vorherigen Befehl invertiert
     {
-        rec868_global.tstart = rec868_global.ttemp; //Anfang des L-Pegels merken (Sender an)
+        rec868_global.tl = rec868_global.ttemp; //Dauer des vorhergehenden L-Pegels (Sender aus)
+        //PORTB |= (1<<PB1); //Set PB1
         return;
     }
-    // L/H-Flanke detektiert
-    rec868_global.th = rec868_global.ttemp - rec868_global.tstart; //L-Dauer berechnen (Sender-An-Dauer)
-    debug_printf("INT ausgeloest");
+    // H/L-Flanke detektiert
+    //PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
+    rec868_global.th = rec868_global.ttemp; //Dauer des H-Pegels (Sender-An-Dauer)
+    //if (rec868_global.fspre || rec868_global.fsrec || rec868_global.wspre || rec868_global.wsrec)
+    if (rec868_global.fsrec == TRUE)
+    {
+        //debug_printf("TH=%d TL=%d\n", rec868_global.th, rec868_global.tl);
+    }
     // Beginn der Auswertung
     if(rec868_global.th < T1)
     {
@@ -378,8 +406,7 @@ ISR(ANALOG_COMP_vect)
                     }
                     rec868_global.wspre = FALSE; // Ende der Präambel
                     rec868_global.bitcount = 0;
-                    debug_printf("WS-Preamble received");
- //                   PORTB |= _BV(PB5); // REC Signalisierung einschalten
+                    //PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
                     return;
                 }
                 if (rec868_global.bitcount == 4)
@@ -413,8 +440,7 @@ ISR(ANALOG_COMP_vect)
             }
             if (rec868_global.bitcount > 6)  // Ende der Präambel
             {
- //               PORTB |= _BV(PB5); // REC Signalisierung einschalten
-                debug_printf("FS-Preamble received");
+                //PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
                 rec868_global.fspre = FALSE;
                 rec868_global.bitcount = 0;
                 return;
@@ -458,6 +484,7 @@ ISR(ANALOG_COMP_vect)
     }
     ic_error();
 }
+
 
 /*
   -- Ethersex META --

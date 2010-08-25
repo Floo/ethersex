@@ -29,6 +29,13 @@
 #include <inttypes.h>
 #include <util/parity.h>
 
+#ifndef AUTOCONF_INCLUDED
+#include "autoconf.h"
+#endif
+
+#include "config.h"
+#include "core/debug.h"
+
 #ifndef TRUE
 #define TRUE      1
 #endif
@@ -47,20 +54,17 @@
 #define REC868_CLR      0x00
 #define REC868_REC_WETT 0x01 // KS300 oder AS2000 empfangen, steht zum Auswerten bereit
 #define REC868_REC_FS20 0x02 // FS20-Sequenz empfangen, üsteht zum Auswerten bereit
-#define REC868_TX_WETT  0xF1 // Tastenbetätigung empfangen, über I2C senden
-#define REC868_TX_HELL  0xF2 // Clear-Befehl über I2C erhalten, Empfang starten
-#define REC868_TX_FS20  0xF3 // FS20-Befehl über I2C erhalten, steht zum Senden bereit
 
 // Grenzen zur Unterscheidung der Pulslängen
-// Vorteiler: 1 Timerschritt = 6.4µs
-// CLK/64
+// Vorteiler: 1 Timerschritt = 12,8µs
+// CLK/256
 //#define T1	38 // 300 µs
-#define T1  36 // 230 µs
-#define T2	78 // 500 µs
-#define T5  102 //650 µs
-#define T3	109 // 700 µs
+#define T1  16 // 230 µs
+#define T2	39 // 500 µs
+#define T5  51 //650 µs
+#define T3	55 // 700 µs
 //#define T4 125 // 1000 µs
-#define T4 172 // 1100 µs
+#define T4 86 // 1100 µs
 
 struct rec868_global_t
 {
@@ -84,9 +88,8 @@ struct rec868_global_t
     uint8_t fspre; //Präambel der FS20-Sequenz wird empfangen (bool)
     uint8_t wspre; //Präambel der Wetter-Sequenz wird empfangen (bool)
 
-    uint8_t th; //Dauer des L-Pegels
-
-    uint8_t tstart; //Timerstand zur letzten H/L-Flanke
+    uint8_t th; //Dauer des H-Pegels
+    uint8_t tl; //Dauer des L-Pegels
     uint8_t ttemp; //aktueller Timerstand beim Aufruf des Interrupts
 
     uint8_t bitcount; //Zähler der empfangenen Bits
@@ -104,6 +107,7 @@ extern volatile struct rec868_global_t rec868_global;
 
 void rec868_process(void);
 void rec868_init(void);
+void rec868_stop(void);
 void start_Rec(void);
 void out_FS20(void);
 void out_Wett(void);
