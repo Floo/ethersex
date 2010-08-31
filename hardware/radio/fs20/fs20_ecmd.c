@@ -29,6 +29,9 @@
 #include "core/debug.h"
 #include "hardware/radio/fs20/fs20.h"
 
+#include "hardware/radio/fs20/rec868.h"
+
+
 #include "protocols/ecmd/ecmd-base.h"
 
 
@@ -49,8 +52,14 @@ int16_t parse_cmd_fs20_send(char *cmd, char *output, uint16_t len)
 #ifdef DEBUG_ECMD_FS20
         debug_printf("fs20_send(0x%x,0x%x,0x%x)\n", hc, LO8(addr), LO8(c));
 #endif
-
+#ifdef REC868_SUPPORT
+        rec868_stop(); //Empfang waehrend des Sendens abschalten
+#endif
         fs20_send(hc, LO8(addr), LO8(c));
+#ifdef REC868_SUPPORT
+        if(rec868_global.stat.fs20 | rec868_global.stat.wett | rec868_global.stat.hell)
+            rec868_start();
+#endif
         return ECMD_FINAL_OK;
     }
 

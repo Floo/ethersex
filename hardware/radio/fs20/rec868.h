@@ -24,15 +24,21 @@
 #define _REC868_H
 
 
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <inttypes.h>
 #include <util/parity.h>
+#include <stdlib.h>
 
 #ifndef AUTOCONF_INCLUDED
 #include "autoconf.h"
 #endif
 
+#ifdef REC868_SUPPORT
+
+#include "protocols/ecmd/sender/ecmd_sender_net.h"
+#include "protocols/uip/uip.h"
 #include "config.h"
 #include "core/debug.h"
 
@@ -76,12 +82,6 @@ struct rec868_global_t
         uint8_t wett:1;
         uint8_t hell:1;
     }stat;
-    union
-    {
-        uint8_t txWett[8]; //Temp[2], Wind[2], Regen[2], Feuchte[1], RegenSofort[1](bool)
-        uint8_t txFS20[3]; //Adresse, Befehl_1, Befehl_2
-        uint8_t txHell[2]; //int16
-    };
     //Werte zum Auswerten der Empfangssequenzen
     uint8_t fsrec; //FS20-Sequenz wird empfangen (bool)
     uint8_t wsrec; //Wetter-Sequenz wird empfangen (bool)
@@ -104,19 +104,20 @@ struct rec868_global_t
 };
 
 extern volatile struct rec868_global_t rec868_global;
+extern uip_ipaddr_t udp_ip;
 
 void rec868_process(void);
 void rec868_init(void);
 void rec868_stop(void);
-void start_Rec(void);
+void rec868_start(void);
 void out_FS20(void);
 void out_Wett(void);
 void out_Hell(void);
-void init_Rec(void);
 void ic_error(void);
 void ic_up1(void);
 void ic_up2(void);
 
+#endif // REC868_SUPPORT
 
 #endif //_REC868_H
 

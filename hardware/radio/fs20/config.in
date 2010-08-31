@@ -1,13 +1,13 @@
-if [ "$RS868_SUPPORT" = "y" ]; then
+if [ "$REC868_SUPPORT" = "y" ]; then
   define_bool ENABLE_FS20_SUPPORT n
 else
   define_bool ENABLE_FS20_SUPPORT y
 fi
 
-dep_bool_menu "FS20 RF-control" FS20_SUPPORT $CONFIG_EXPERIMENTAL $ARCH_AVR $ENABLE_FS20_SUPPORT
+dep_bool_menu "FS20 RF-control" FS20_SUPPORT $CONFIG_EXPERIMENTAL $ARCH_AVR 
   dep_bool "FS20 Send" FS20_SEND_SUPPORT $FS20_SUPPORT
-  dep_bool "FS20 Recieve" FS20_RECEIVE_SUPPORT $FS20_SUPPORT
-  dep_bool "FS20 Recieve WS300" FS20_RECEIVE_WS300_SUPPORT $FS20_RECEIVE_SUPPORT
+  dep_bool "FS20 Receive" FS20_RECEIVE_SUPPORT $FS20_SUPPORT $ENABLE_FS20_SUPPORT
+  dep_bool "FS20 Receive WS300" FS20_RECEIVE_WS300_SUPPORT $FS20_RECEIVE_SUPPORT
 	comment  "Debugging Flags"
 	dep_bool 'FS20 Receive' DEBUG_FS20_REC $DEBUG
 	dep_bool 'FS20 Receive Queue' DEBUG_FS20_REC_QUEUE $DEBUG_FS20_REC
@@ -16,13 +16,14 @@ dep_bool_menu "FS20 RF-control" FS20_SUPPORT $CONFIG_EXPERIMENTAL $ARCH_AVR $ENA
 	dep_bool 'FS20 WS300 Verbose' DEBUG_FS20_WS300_VERBOSE $DEBUG_FS20_WS300
 endmenu
 
-if [ "$FS20_SUPPORT" = "y" ]; then
-  define_bool ENABLE_RS868_SUPPORT n
+if [ "$FS20_RECEIVE_SUPPORT" = "y" ] && [ "$FS20_SUPPORT" = "y" ]; then
+  define_bool ENABLE_REC868_SUPPORT n
 else
-  define_bool ENABLE_RS868_SUPPORT y
+  define_bool ENABLE_REC868_SUPPORT y
 fi
 
-dep_bool_menu "868Mhz RF-control (new)" RS868_SUPPORT $CONFIG_EXPERIMENTAL $ARCH_AVR $ENABLE_RS868_SUPPORT
-  dep_bool "FS20 Send" SEND868_SUPPORT $RS868_SUPPORT
-  dep_bool "868MHz Receiver for FS20, WS300 and AS2000" REC868_SUPPORT $RS868_SUPPORT
+dep_bool_menu "868MHz Receiver for FS20, WS300 and AS2000 (new)" REC868_SUPPORT $CONFIG_EXPERIMENTAL $ARCH_AVR $ENABLE_REC868_SUPPORT
+	comment  "Debugging Flags"
+	dep_bool '868MHz Receiver' DEBUG_REC868 $DEBUG
 endmenu
+
