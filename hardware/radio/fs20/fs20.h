@@ -33,6 +33,7 @@
 #error "F_CPU undefined!"
 #endif
 
+
 #define FS20_DELAY_ZERO (4 * (F_CPU / 10000) / 4) /* 400uS, for delay_loop_2 */
 #define FS20_DELAY_ONE  (6 * (F_CPU / 10000) / 4) /* 600uS, for delay_loop_2 */
 #define FS20_DELAY_CMD  ( F_CPU / 100 / 4) /* 10ms, for delay_loop_2 */
@@ -243,6 +244,7 @@ void fs20_init(void);
 
 #ifdef FS20_SEND_SUPPORT
 void fs20_send(uint16_t housecode, uint8_t address, uint8_t command);
+void fs20_send_ew(uint16_t housecode, uint8_t address, uint8_t command, uint8_t ewbyte);
 #endif
 
 #ifdef FS20_RECEIVE_SUPPORT

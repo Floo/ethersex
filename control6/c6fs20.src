@@ -5,6 +5,10 @@ CONTROL_START
 
   PIN_INPUT(TASTER)
 
+  ON STARTUP DO
+    UESEND(255.255.255.255, "%05u E6 UP \n", udp_count++);
+  END
+
   ON PIN_FALLING(TASTER) DO
       DEBUG("TASTER_FALLING");
       TIMER_START(tastenTimer)
@@ -17,7 +21,7 @@ CONTROL_START
       ON tastenTimerLaeuft != 0 DO
         DEBUG("Taste kurz")
         tastenTimerLaeuft = 0;
-        UESEND(192.168.178.22, "%05u TASTER KURZ \n", udp_count++);
+        UESEND(255.255.255.255, "%05u TASTER KURZ \n", udp_count++);
       END
   END
 
@@ -25,7 +29,7 @@ CONTROL_START
       ON TIMER(tastenTimer) > 3 DO
         DEBUG("Taste lang")
         tastenTimerLaeuft = 0;
-        UESEND(192.168.178.22, "%05u TASTER LANG \n", udp_count++);
+        UESEND(255.255.255.255, "%05u TASTER LANG \n", udp_count++);
       END
   END
 

@@ -23,6 +23,10 @@
 
 #include "rec868.h"
 
+#ifndef FS20_SEND_SUPPORT
+    #define DEBUG_PB1_ENABLE
+#endif
+
 
 
 volatile struct rec868_global_t rec868_global;
@@ -80,7 +84,7 @@ void out_Wett(void)
         regenSofort = rec868_global.wsseq[1] & 0x02;
         len = 62;
         buf = malloc(len);
-        snprintf(buf, len, "%05u KS300 TEMP:%+04d WIND:%03d RAINCOUNT:%03d HUMID:%02d RAIN:%01d\n", udp_count++,
+        snprintf(buf, len, "%05u KS300 TEMP:%+04d WIND:%03d RAINCOUNT:%04d HUMID:%02d RAIN:%01d\n", udp_count++,
                  temp, wind, regen, feuchte, regenSofort);
         if (buf != 0)
             uecmd_sender_send_command(&udp_ip, buf, NULL);
@@ -210,7 +214,9 @@ void rec868_process(void)
 
 void rec868_stop(void)
 {
+    #ifdef DEBUG_PB1_ENABLE
     PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
+    #endif
     ACSR &= ~_BV(ACIE); //Interrupt ANALOG_COMP sperren
 }
 
@@ -245,9 +251,11 @@ void rec868_init(void)
     //Pins ueber E6-Fkten festlegen
     DDRB &= ~(1<<PB3); //Pin PB3 als Eingang
     PORTB &= ~(1<<PB3); //Clear PB3
+    #ifdef DEBUG_PB1_ENABLE
     //fuer Tests PB1 als Ausgang
     DDRB |= (1<<PB1);
     PORTB |= (1<<PB1);
+    #endif
     /* enable analog comparator,
      * use fixed voltage reference (1V, connected to AIN0)
      * Reaktion auf Flanke je nach ACIS0-Wert
@@ -262,7 +270,9 @@ void rec868_init(void)
 void rec868_start(void)
 {
     ic_error(); //Variablen ruecksetzen
+    #ifdef DEBUG_PB1_ENABLE
     //PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
+    #endif
     rec868_global.kommando = REC868_CLR;
     ACSR &= ~_BV(ACI); //anstehende Interrupts löschen
     ACSR |= _BV(ACIE); //Enable AnanlogComperatorInterrupt
@@ -273,15 +283,9 @@ void rec868_start(void)
 
 void ic_error(void)
 {
-/*    if (rec868_global.fsrec && !rec868_global.fspre)
-    {
-        PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
-    }
-    if (rec868_global.wsrec && !rec868_global.wspre)
-    {
-        PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
-    }*/
+    #ifdef DEBUG_PB1_ENABLE
     //PORTB &= ~(1<<PB1); //Clear PB1: REC Signalisierung abschalten
+    #endif
     rec868_global.fsrec = FALSE;
     rec868_global.wsrec = FALSE;
     rec868_global.fspre = FALSE;
@@ -385,11 +389,12 @@ ISR(ANALOG_COMP_vect)
                             // da im vorherigen Befehl invertiert
     {
         rec868_global.tl = rec868_global.ttemp; //Dauer des vorhergehenden L-Pegels (Sender aus)
-        //PORTB |= (1<<PB1); //Set PB1
         return;
     }
     // H/L-Flanke detektiert
+    #ifdef DEBUG_PB1_ENABLE
     //PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
+    #endif
     rec868_global.th = rec868_global.ttemp; //Dauer des H-Pegels (Sender-An-Dauer)
     // Beginn der Auswertung
     if(rec868_global.th < T1)
@@ -430,7 +435,9 @@ ISR(ANALOG_COMP_vect)
                     }
                     rec868_global.wspre = FALSE; // Ende der Präambel
                     rec868_global.bitcount = 0;
+                    #ifdef DEBUG_PB1_ENABLE
                     PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
+                    #endif
                     return;
                 }
                 if (rec868_global.bitcount == 4)
@@ -464,7 +471,9 @@ ISR(ANALOG_COMP_vect)
             }
             if (rec868_global.bitcount > 6)  // Ende der Präambel
             {
+                #ifdef DEBUG_PB1_ENABLE
                 //PORTB |= (1<<PB1); //Set PB1: REC Signalisierung einschalten
+                #endif
                 rec868_global.fspre = FALSE;
                 rec868_global.bitcount = 0;
                 return;
