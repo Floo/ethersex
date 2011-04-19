@@ -25,6 +25,7 @@
 /* network controller hardware bug defines */
 #define ENC28J60_REV4_WORKAROUND
 #define ENC28J60_REV5_WORKAROUND
+#define ENC28J60_REV6_WORKAROUND  /* rev is 6; but microchip calls it B7 */
 
 /* global version defines */
 #if VERSION_STRING_CHOICE == USE_BUILDDATE_VERSION
