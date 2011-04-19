@@ -1,0 +1,1563 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ethersex" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="avrgcc" />
+		<Build>
+			<Target title="all">
+				<Option platforms="Unix;" />
+				<Option output="ethersex" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="avrgcc" />
+				<Option use_console_runner="0" />
+				<ExtraCommands>
+					<Add after="cd /home/florian/www/lxr/database" />
+					<Add after="/home/florian/www/lxr/bin/genxref /home/florian/Entwicklung/AVR/ethersex/" />
+					<Add after="chmod 644 fileidx" />
+					<Add after="glimpseindex -H . /home/florian/Entwicklung/AVR/ethersex" />
+					<Add after="chmod 644 .glimpse_*" />
+					<Add after="cp /home/florian/Entwicklung/AVR/ethersex/ethersex.bin /home/florian/Entwicklung/AVR/tftpboot/" />
+					<Add after="/home/florian/Entwicklung/AVR/tftpboot/boot.sh" />
+				</ExtraCommands>
+			</Target>
+			<Target title="debug">
+				<Option platforms="Unix;" />
+				<Option output="ethersex" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="avrgcc" />
+				<Option use_console_runner="0" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="autoconf.h" />
+		<Unit filename="codeblocks/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="config.h" />
+		<Unit filename="contrib/ecmd_usb/ecmd_usb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/kty81-110/kty-calibrate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/kty81-110/kty-merge.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/kty81-110/nc_udp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/libecmd/interactive/interactive.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/libecmd/libecmd.cpp" />
+		<Unit filename="contrib/libecmd/libecmd.h" />
+		<Unit filename="contrib/libecmd/rfm12ask_2272/rfm12ask_2272.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/mcuf/modsim.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/mcuf/modsim.h" />
+		<Unit filename="contrib/udpCurtain/curtain_udp_test.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/usb_net/usb_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/webscripts/sty.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="contrib/zbus-serial-host/zbus-serial-host.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="control6/c6fs20.src" />
+		<Unit filename="control6/control6-header.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/control6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="control6/control6.h" />
+		<Unit filename="control6/control6.src" />
+		<Unit filename="control6/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="control6/lang.d/00_header.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/10_ecmd_global.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/10_global_vars.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/20_actions.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/20_control.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/20_timers.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/45_tcp.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/45_udp.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_adc.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_ads7822.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_clock.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_conditionals.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_debug.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_ecmd_sender.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_fs20.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_isdn_psb2186.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_jabber.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_kty81.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_mpd.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_onewire.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_ps2.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_rc5.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_sendmail.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_sht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_sms77.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_syslog.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_tty.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_twitter.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_uecmd_sender.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/50_vfs.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/55_menu.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/lang.d/99_footer.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="control6/testrc5.src" />
+		<Unit filename="core/bit-macros.h" />
+		<Unit filename="core/crypto/cast5-sbox.h" />
+		<Unit filename="core/crypto/cast5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/crypto/cast5.h" />
+		<Unit filename="core/crypto/md5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/crypto/md5.h" />
+		<Unit filename="core/crypto/md5_sbox.h" />
+		<Unit filename="core/crypto/sha1-asm.S" />
+		<Unit filename="core/debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/debug.h" />
+		<Unit filename="core/eeprom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/eeprom.h" />
+		<Unit filename="core/global.h" />
+		<Unit filename="core/gui/font.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/gui/font.h" />
+		<Unit filename="core/gui/geometric.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/gui/gui.h" />
+		<Unit filename="core/gui/matek.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="core/gui/matek/test.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="core/heartbeat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/heartbeat.h" />
+		<Unit filename="core/host/avr/eeprom.h" />
+		<Unit filename="core/host/avr/interrupt.h" />
+		<Unit filename="core/host/avr/io.h" />
+		<Unit filename="core/host/avr/pgmspace.h" />
+		<Unit filename="core/host/avr/wdt.h" />
+		<Unit filename="core/host/eeprom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/host/host.h" />
+		<Unit filename="core/host/printf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/host/stdin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/host/stdin.h" />
+		<Unit filename="core/host/tap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/host/tap.h" />
+		<Unit filename="core/host/util/crc16.h" />
+		<Unit filename="core/host/util/delay.h" />
+		<Unit filename="core/host/vfs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/host/vfs.h" />
+		<Unit filename="core/periodic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/periodic.h" />
+		<Unit filename="core/portio/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/portio/ecmd_base.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/portio/ecmd_np.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/portio/ecmd_simple.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/portio/named_pin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/portio/named_pin.h" />
+		<Unit filename="core/portio/np_simple.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="core/portio/np_web.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="core/portio/portio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/portio/portio.h" />
+		<Unit filename="core/portio/user_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/portio/user_config.h" />
+		<Unit filename="core/pt/lc-switch.h" />
+		<Unit filename="core/pt/lc.h" />
+		<Unit filename="core/pt/pt.h" />
+		<Unit filename="core/setbaud.h" />
+		<Unit filename="core/soft_spi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/soft_uart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/spi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/spi.h" />
+		<Unit filename="core/spi_usart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/tty/tty-hd44780.h" />
+		<Unit filename="core/tty/tty-s1d13305.h" />
+		<Unit filename="core/tty/tty-s1d15g10.h" />
+		<Unit filename="core/tty/tty-vt100-telnet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/tty/tty-vt100-telnet.h" />
+		<Unit filename="core/tty/tty-vt100.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/tty/tty-vt100.h" />
+		<Unit filename="core/tty/tty.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/tty/tty.h" />
+		<Unit filename="core/usart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/usart.h" />
+		<Unit filename="core/util/delay_bit.h" />
+		<Unit filename="core/util/fixedpoint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/util/fixedpoint.h" />
+		<Unit filename="core/vfs/vfs-concat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/vfs/vfs-util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/vfs/vfs-util.h" />
+		<Unit filename="core/vfs/vfs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/vfs/vfs.h" />
+		<Unit filename="core/vfs/vfs_inline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="core/vfs/vfs_inline.h" />
+		<Unit filename="core/vfs/vfs_teensy.h" />
+		<Unit filename="embed/Sty.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="embed/Xky.ht.cpp" />
+		<Unit filename="embed/Xow.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/adc.ht.cpp" />
+		<Unit filename="embed/cam.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/cfg.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/cur.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/gi.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/i2.xml.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/i2c.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/i3.xml.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/idx.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/io.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/lcd.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/mm.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/msr.ht.cpp" />
+		<Unit filename="embed/osm.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/ow.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/ps.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/rf.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/ste.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="embed/to1.ht.cpp" />
+		<Unit filename="embed/tst.ht.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="ethersex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/adc/adc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/adc/ads7822/ads7822.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/adc/ads7822/ads7822.h" />
+		<Unit filename="hardware/adc/ads7822/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/adc/kty/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/adc/kty/kty81.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/adc/kty/kty81.h" />
+		<Unit filename="hardware/avr/bootloader_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/avr/dump_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/avr/fuse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/avr/hostname.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/avr/reset_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/camera/dc3840-util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/camera/dc3840-util.h" />
+		<Unit filename="hardware/camera/dc3840.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/camera/dc3840.h" />
+		<Unit filename="hardware/camera/vfs_dc3840.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/camera/vfs_dc3840.h" />
+		<Unit filename="hardware/clock/dcf77/dcf77.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/clock/dcf77/dcf77.h" />
+		<Unit filename="hardware/dac/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/dac/ltc1257.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/dac/ltc1257.h" />
+		<Unit filename="hardware/dac/ltc1257_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/dac/tlc5620.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/dac/tlc5620.h" />
+		<Unit filename="hardware/ethernet/enc28j60.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ethernet/enc28j60.h" />
+		<Unit filename="hardware/ethernet/enc28j60_process.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ethernet/enc28j60_transmit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ethernet/ethernet_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ethernet/ethernet_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_24CXX.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_24CXX.h" />
+		<Unit filename="hardware/i2c/master/i2c_ds1337.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_ds1337.h" />
+		<Unit filename="hardware/i2c/master/i2c_ds1631.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_ds1631.h" />
+		<Unit filename="hardware/i2c/master/i2c_generic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_generic.h" />
+		<Unit filename="hardware/i2c/master/i2c_lm75.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_lm75.h" />
+		<Unit filename="hardware/i2c/master/i2c_master.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_master.h" />
+		<Unit filename="hardware/i2c/master/i2c_max7311.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_max7311.h" />
+		<Unit filename="hardware/i2c/master/i2c_pca9531.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_pca9531.h" />
+		<Unit filename="hardware/i2c/master/i2c_pcf8574x.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_pcf8574x.h" />
+		<Unit filename="hardware/i2c/master/i2c_state.h" />
+		<Unit filename="hardware/i2c/master/i2c_tsl2550.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_tsl2550.h" />
+		<Unit filename="hardware/i2c/master/i2c_udp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_udp.h" />
+		<Unit filename="hardware/i2c/master/i2c_udp_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/i2c_udp_net.h" />
+		<Unit filename="hardware/i2c/master/vfs_eeprom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/vfs_eeprom.h" />
+		<Unit filename="hardware/i2c/master/vfs_eeprom_raw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/master/vfs_eeprom_raw.h" />
+		<Unit filename="hardware/i2c/slave/i2c_slave.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/slave/i2c_slave.h" />
+		<Unit filename="hardware/i2c/slave/i2c_slave_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/i2c/slave/i2c_slave_net.h" />
+		<Unit filename="hardware/i2c/slave/i2c_slave_state.h" />
+		<Unit filename="hardware/input/buttons/buttons.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/input/buttons/buttons.h" />
+		<Unit filename="hardware/input/buttons/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/input/buttons/joystick_digital.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/input/buttons/joystick_digital.h" />
+		<Unit filename="hardware/input/game_commons.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/input/game_commons.h" />
+		<Unit filename="hardware/input/ps2/ps2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/input/ps2/ps2.h" />
+		<Unit filename="hardware/io_expander/hc165.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/io_expander/hc165.h" />
+		<Unit filename="hardware/io_expander/hc595.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/io_expander/hc595.h" />
+		<Unit filename="hardware/ir/rc5/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ir/rc5/rc5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ir/rc5/rc5.h" />
+		<Unit filename="hardware/ir/rc5/rc5_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ir/rc5/rc5_net.h" />
+		<Unit filename="hardware/isdn/psb2186.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/isdn/psb2186.h" />
+		<Unit filename="hardware/lcd/ST7626/4x6.h" />
+		<Unit filename="hardware/lcd/ST7626/ST7626.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/ST7626/ST7626.h" />
+		<Unit filename="hardware/lcd/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/hd44780.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/hd44780.h" />
+		<Unit filename="hardware/lcd/hd44780_core.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/hd44780_i2c.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/hd44780_serlcd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/s1d13305/s1d13305.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/s1d13305/s1d13305.h" />
+		<Unit filename="hardware/lcd/s1d13305/s1d13305_cfg.h" />
+		<Unit filename="hardware/lcd/s1d15g10/bunnies.h" />
+		<Unit filename="hardware/lcd/s1d15g10/s1d15g10.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/lcd/s1d15g10/s1d15g10.h" />
+		<Unit filename="hardware/onewire/ds2450.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/onewire/ds2450.h" />
+		<Unit filename="hardware/onewire/ds2450_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/onewire/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/onewire/onewire.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/onewire/onewire.h" />
+		<Unit filename="hardware/pwm/entchen.h" />
+		<Unit filename="hardware/pwm/pwm_melody.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/pwm/pwm_melody.h" />
+		<Unit filename="hardware/pwm/pwm_melody_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/pwm/pwm_servo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/pwm/pwm_servo.h" />
+		<Unit filename="hardware/pwm/pwm_servo_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/pwm/pwm_wav.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/pwm/pwm_wav.h" />
+		<Unit filename="hardware/pwm/pwm_wav_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/fs20/fs20.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/fs20/fs20.h" />
+		<Unit filename="hardware/radio/fs20/fs20_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/fs20/rec868.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/fs20/rec868.h" />
+		<Unit filename="hardware/radio/fs20/rec868_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/fs20/send868.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/fs20/send868.h" />
+		<Unit filename="hardware/radio/rfm12/ask_sense.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/rfm12/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/rfm12/ecmd_ask.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/rfm12/process.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/rfm12/rfm12.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/rfm12/rfm12.h" />
+		<Unit filename="hardware/radio/rfm12/rfm12_ask.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/rfm12/rfm12_ask.h" />
+		<Unit filename="hardware/radio/rfm12/rfm12_raw_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/radio/rfm12/rfm12_raw_net.h" />
+		<Unit filename="hardware/radio/rfm12/rfm12_raw_state.h" />
+		<Unit filename="hardware/sht/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/sht/sht.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/sht/sht.h" />
+		<Unit filename="hardware/sms/sms.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/sms/sms.h" />
+		<Unit filename="hardware/sms/sms_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/sms/sms_ecmd.h" />
+		<Unit filename="hardware/sms/sms_encoding.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/sms/sms_encoding.h" />
+		<Unit filename="hardware/sram/sram.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/sram/sram.h" />
+		<Unit filename="hardware/storage/dataflash/df.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/dataflash/df.h" />
+		<Unit filename="hardware/storage/dataflash/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/dataflash/fs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/dataflash/fs.h" />
+		<Unit filename="hardware/storage/dataflash/vfs_df.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/dataflash/vfs_df.h" />
+		<Unit filename="hardware/storage/sd_reader/byteordering.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/sd_reader/byteordering.h" />
+		<Unit filename="hardware/storage/sd_reader/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/sd_reader/fat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/sd_reader/fat.h" />
+		<Unit filename="hardware/storage/sd_reader/fat_config.h" />
+		<Unit filename="hardware/storage/sd_reader/init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/sd_reader/partition.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/sd_reader/partition.h" />
+		<Unit filename="hardware/storage/sd_reader/partition_config.h" />
+		<Unit filename="hardware/storage/sd_reader/sd-reader_config.h" />
+		<Unit filename="hardware/storage/sd_reader/sd_raw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/sd_reader/sd_raw.h" />
+		<Unit filename="hardware/storage/sd_reader/sd_raw_config.h" />
+		<Unit filename="hardware/storage/sd_reader/vfs_sd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/storage/sd_reader/vfs_sd.h" />
+		<Unit filename="hardware/ultrasonic/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ultrasonic/srf05.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/ultrasonic/ultrasonic.h" />
+		<Unit filename="hardware/zacwire/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/zacwire/zacwire.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hardware/zacwire/zacwire.h" />
+		<Unit filename="mcuf/borg-16/snake.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/borg-16/snake.h" />
+		<Unit filename="mcuf/borg-16/xoni_study.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/borg-16/xoni_study.h" />
+		<Unit filename="mcuf/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/image/image.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/image/image.h" />
+		<Unit filename="mcuf/ledmatrixint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/ledmatrixint.h" />
+		<Unit filename="mcuf/mcuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/mcuf.h" />
+		<Unit filename="mcuf/mcuf_modul.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/mcuf_modul.h" />
+		<Unit filename="mcuf/mcuf_modul_defs.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="mcuf/mcuf_modul_examples.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/mcuf_modul_examples.h" />
+		<Unit filename="mcuf/mcuf_modul_magic.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="mcuf/mcuf_modul_test_game_input.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/mcuf_modul_test_game_input.h" />
+		<Unit filename="mcuf/mcuf_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/mcuf_net.h" />
+		<Unit filename="mcuf/mcuf_text.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcuf/mcuf_text.h" />
+		<Unit filename="meta.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="meta.h" />
+		<Unit filename="meta.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="network.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="network.h" />
+		<Unit filename="pinning.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega128.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega1284p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega16.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega162.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega168.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega168p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega32.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega328p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega64.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega644.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega644p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega8.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/controllers/atmega88.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/Arduino_Duemilanove.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/Fimser.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/Jackalope.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/JeeLinkv2.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/MicroWebServer.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/conrad_probot.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/ehaserl.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/etherrape.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/generic_usb_teensy.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/netio.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/other.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/pollin_funkevalboard.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/hardware/radig_web.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/footer.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega128.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega1284p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega16.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega162.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega168.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega168p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega32.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega328p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega64.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega644.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega644p.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega8.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/hackery_atmega88.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="pinning/internals/header.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/artnet/artnet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/artnet/artnet.h" />
+		<Unit filename="protocols/artnet/artnet_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/artnet/artnet_net.h" />
+		<Unit filename="protocols/bootp/bootp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/bootp/bootp.h" />
+		<Unit filename="protocols/bootp/bootp_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/bootp/bootp_net.h" />
+		<Unit filename="protocols/bootp/bootp_state.h" />
+		<Unit filename="protocols/bootp/bootphdr.h" />
+		<Unit filename="protocols/cw/cw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/cw/cw.h" />
+		<Unit filename="protocols/dmx/dmx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/dmx/dmx.h" />
+		<Unit filename="protocols/dmx/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/dns/dns_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/dns/dns_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/dns/dns_net.h" />
+		<Unit filename="protocols/dns/resolv.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/dns/resolv.h" />
+		<Unit filename="protocols/ecmd/alias_defs.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/ecmd/alias_magic.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/ecmd/aliascmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/aliascmd.h" />
+		<Unit filename="protocols/ecmd/ecmd-base.h" />
+		<Unit filename="protocols/ecmd/ecmd_defs.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/ecmd/ecmd_magic.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/ecmd/parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/parser.h" />
+		<Unit filename="protocols/ecmd/scripting.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/scripting.h" />
+		<Unit filename="protocols/ecmd/sender/ecmd_sender_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/sender/ecmd_sender_net.h" />
+		<Unit filename="protocols/ecmd/sender/ecmd_sender_state.h" />
+		<Unit filename="protocols/ecmd/sender/uecmd_sender_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/sender/uecmd_sender_pgm_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/via_i2c/ecmd_i2c.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/via_i2c/ecmd_i2c.h" />
+		<Unit filename="protocols/ecmd/via_tcp/ecmd_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/via_tcp/ecmd_net.h" />
+		<Unit filename="protocols/ecmd/via_tcp/ecmd_state.h" />
+		<Unit filename="protocols/ecmd/via_udp/uecmd_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/via_udp/uecmd_net.h" />
+		<Unit filename="protocols/ecmd/via_usart/ecmd_usart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ecmd/via_usart/ecmd_usart.h" />
+		<Unit filename="protocols/httplog/httplog.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/httplog/httplog.h" />
+		<Unit filename="protocols/httplog/httplog_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/irc/irc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/irc/irc.h" />
+		<Unit filename="protocols/irc/irc_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/irc/irc_state.h" />
+		<Unit filename="protocols/mdns_sd/mdns_sd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/mdns_sd/mdns_sd.h" />
+		<Unit filename="protocols/mdns_sd/mdns_sd_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/mdns_sd/mdns_sd_net.h" />
+		<Unit filename="protocols/mdns_sd/mdns_services.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/modbus/modbus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/modbus/modbus.h" />
+		<Unit filename="protocols/modbus/modbus_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/modbus/modbus_client.h" />
+		<Unit filename="protocols/modbus/modbus_client_cb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/modbus/modbus_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/modbus/modbus_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/modbus/modbus_net.h" />
+		<Unit filename="protocols/modbus/modbus_state.h" />
+		<Unit filename="protocols/msr1/msr1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/msr1/msr1.h" />
+		<Unit filename="protocols/msr1/msr1_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/mysql/mysql.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/mysql/mysql.h" />
+		<Unit filename="protocols/mysql/mysql_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/mysql/mysql_state.h" />
+		<Unit filename="protocols/netstat/netstat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/netstat/netstat.h" />
+		<Unit filename="protocols/netstat/netstat_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/nmea/nmea.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/nmea/nmea.h" />
+		<Unit filename="protocols/nmea/nmea_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/serial_line_log/serial_line_log.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/serial_line_log/serial_line_log.h" />
+		<Unit filename="protocols/serial_line_log/serial_line_log_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/sms77/sms77.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/sms77/sms77.h" />
+		<Unit filename="protocols/sms77/sms77_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/smtp/sendmail.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/smtp/sendmail.h" />
+		<Unit filename="protocols/snmp/snmp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/snmp/snmp.h" />
+		<Unit filename="protocols/snmp/snmp_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/snmp/snmp_net.h" />
+		<Unit filename="protocols/soap/soap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/soap/soap.h" />
+		<Unit filename="protocols/soap/soap_magic.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/syslog/syslog.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/syslog/syslog.h" />
+		<Unit filename="protocols/syslog/syslog_debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/syslog/syslog_debug.h" />
+		<Unit filename="protocols/syslog/syslog_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/syslog/syslog_net.h" />
+		<Unit filename="protocols/to1/to1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/to1/to1.h" />
+		<Unit filename="protocols/to1/to1_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/twitter/twitter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/twitter/twitter.h" />
+		<Unit filename="protocols/twitter/twitter_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/udpIO/udpio_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/udpIO/udpio_net.h" />
+		<Unit filename="protocols/udpcurtain/udpcurtain_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/udpcurtain/udpcurtain_net.h" />
+		<Unit filename="protocols/udpstella/udpstella_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/udpstella/udpstella_net.h" />
+		<Unit filename="protocols/uip/check_cache.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/check_cache.h" />
+		<Unit filename="protocols/uip/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/ipchair/ipchair.h" />
+		<Unit filename="protocols/uip/ipchair/ipchair.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/uip/ipchair/masquerade.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/uip/ipchair/rewrite.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/uip/ipchair/userscript.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="protocols/uip/ipstats.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/ipv6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/ipv6.h" />
+		<Unit filename="protocols/uip/parse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/parse.h" />
+		<Unit filename="protocols/uip/uip-conf.h" />
+		<Unit filename="protocols/uip/uip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip.h" />
+		<Unit filename="protocols/uip/uip_arp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip_arp.h" />
+		<Unit filename="protocols/uip/uip_multi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip_multi.h" />
+		<Unit filename="protocols/uip/uip_neighbor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip_neighbor.h" />
+		<Unit filename="protocols/uip/uip_openvpn.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip_openvpn.h" />
+		<Unit filename="protocols/uip/uip_rfm12.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip_rfm12.h" />
+		<Unit filename="protocols/uip/uip_router.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip_router.h" />
+		<Unit filename="protocols/uip/uip_zbus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/uip/uip_zbus.h" />
+		<Unit filename="protocols/uip/uipopt.h" />
+		<Unit filename="protocols/usb/ecmd_usb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/usb/requests.h" />
+		<Unit filename="protocols/usb/usb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/usb/usb.h" />
+		<Unit filename="protocols/usb/usb_hid_keyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/usb/usb_hid_keyboard.h" />
+		<Unit filename="protocols/usb/usb_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/usb/usb_net.h" />
+		<Unit filename="protocols/usb/usbconfig.h" />
+		<Unit filename="protocols/usb/usbdrv/oddebug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/usb/usbdrv/oddebug.h" />
+		<Unit filename="protocols/usb/usbdrv/usbconfig-prototype.h" />
+		<Unit filename="protocols/usb/usbdrv/usbdrv.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/usb/usbdrv/usbdrv.h" />
+		<Unit filename="protocols/usb/usbdrv/usbdrvasm.S" />
+		<Unit filename="protocols/usb/usbdrv/usbdrvasm.asm" />
+		<Unit filename="protocols/usb/usbdrv/usbportability.h" />
+		<Unit filename="protocols/ustream/ustream.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ustream/ustream.h" />
+		<Unit filename="protocols/ustream/ustream_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ustream/vs1053.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/ustream/vs1053.h" />
+		<Unit filename="protocols/yport/yport.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/yport/yport.h" />
+		<Unit filename="protocols/yport/yport_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/yport/yport_net.h" />
+		<Unit filename="protocols/zbus/process.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/zbus/zbus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/zbus/zbus.h" />
+		<Unit filename="protocols/zbus/zbus_raw_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="protocols/zbus/zbus_raw_net.h" />
+		<Unit filename="protocols/zbus/zbus_raw_state.h" />
+		<Unit filename="scripts/lxdialog/checklist.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/lxdialog/colors.h" />
+		<Unit filename="scripts/lxdialog/dialog.h" />
+		<Unit filename="scripts/lxdialog/inputbox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/lxdialog/lxdialog.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/lxdialog/menubox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/lxdialog/msgbox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/lxdialog/textbox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/lxdialog/util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/lxdialog/yesno.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scripts/meta_header_magic.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="scripts/meta_magic.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="services/appsample/appsample.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/appsample/appsample.h" />
+		<Unit filename="services/appsample/ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/bulbdial/bulbdial.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/bulbdial/bulbdial.h" />
+		<Unit filename="services/clock/clock.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/clock/clock.h" />
+		<Unit filename="services/clock/clock_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/clock/clock_soap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/clock/whm_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/clock/whm_soap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/cron/cron.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/cron/cron.h" />
+		<Unit filename="services/cron/cron_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/cron/cron_static.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/cron/cron_static.h" />
+		<Unit filename="services/cron/test.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/cron/test.h" />
+		<Unit filename="services/curtain/curtain.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/curtain/curtain.h" />
+		<Unit filename="services/curtain/curtain_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/dyndns/dyndns.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/dyndns/dyndns.h" />
+		<Unit filename="services/dyndns/dyndns_state.h" />
+		<Unit filename="services/echo/udp_echo_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/echo/udp_echo_net.h" />
+		<Unit filename="services/httpd/base64.h" />
+		<Unit filename="services/httpd/base64_mit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/handle_400.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/handle_401.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/handle_404.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/handle_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/handle_sd_dir.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/handle_soap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/handle_vfs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/headers.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/httpd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/httpd/httpd.h" />
+		<Unit filename="services/httpd/httpd_state.h" />
+		<Unit filename="services/jabber/jabber.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/jabber/jabber.h" />
+		<Unit filename="services/jabber/jabber_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/jabber/jabber_state.h" />
+		<Unit filename="services/jabber/known_buddies.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="services/jabber/known_buddies.src" />
+		<Unit filename="services/moodlight/moodlight.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/moodlight/moodlight.h" />
+		<Unit filename="services/moodlight/moodlight_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/ntp/ntp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/ntp/ntp.h" />
+		<Unit filename="services/ntp/ntp_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/ntp/ntpd_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/ntp/ntpd_net.h" />
+		<Unit filename="services/pam/pam_ldap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/pam/pam_ldap.h" />
+		<Unit filename="services/pam/pam_ldap_state.h" />
+		<Unit filename="services/pam/pam_none.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/pam/pam_prototypes.h" />
+		<Unit filename="services/pam/pam_single_user.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/pam/pam_single_user_eeprom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/stella/stella.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/stella/stella.h" />
+		<Unit filename="services/stella/stella_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/stella/stella_fading_functions.h" />
+		<Unit filename="services/stella/stella_pwm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/tftp/tftp-bootload.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/tftp/tftp-vfs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/tftp/tftp.h" />
+		<Unit filename="services/tftp/tftp_net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/tftp/tftp_net.h" />
+		<Unit filename="services/tftp/tftp_state.h" />
+		<Unit filename="services/upnp/upnp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/upnp/upnp.h" />
+		<Unit filename="services/upnp/upnp_ecmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/vnc/vnc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/vnc/vnc.h" />
+		<Unit filename="services/vnc/vnc_block_factory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/vnc/vnc_block_factory.h" />
+		<Unit filename="services/vnc/vnc_state.h" />
+		<Unit filename="services/watchcat/user_config.h" />
+		<Unit filename="services/watchcat/watchcat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/watchcat/watchcat.h" />
+		<Unit filename="services/watchcat/watchcat.m4">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="services/wol/wol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="services/wol/wol.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
