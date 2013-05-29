@@ -159,6 +159,9 @@ void mcuf_init(void) {
   snprintf_P(textbuff, 36, PSTR(CONF_MCUF_SCROLLTEXT_STARTUP));
   scrolltext(MCUF_MIN_SCREEN_HEIGHT,CONF_MCUF_SCROLLTEXT_STARTUP_COLOR,CONF_MCUF_SCROLLTEXT_STARTUP_BG_COLOR,CONF_MCUF_SCROLLTEXT_STARTUP_SPEED);
 #endif
+#ifdef MCUF_CLOCK_AUTOSTART_SUPPORT
+  mcuf_show_clock(1);
+#endif /* MCUF_CLOCK_AUTOSTART_SUPPORT */
 }
 
 void mcuf_newdata(void) {
@@ -439,7 +442,7 @@ void tx_start(uint8_t len) {
 }
 
 #ifndef SOFT_UART_SUPPORT
-SIGNAL(usart(USART,_TX_vect)) {
+ISR(usart(USART,_TX_vect)) {
   if (buffer.sent < buffer.len) {
     usart(UDR) = buffer.data[buffer.sent++];
   } else {
@@ -511,7 +514,7 @@ void mcuf_show_clock(uint8_t clockswitch) {
   else
     blp_toc=21;
 
-  struct clock_datetime_t date;
+  clock_datetime_t date;
   clock_current_localtime(&date);
 #ifdef MCUF_SCROLLTEXT_SUPPORT
   if (mcuf_scrolltext_buffer.tomove == 0) {

@@ -28,17 +28,13 @@
 #include "config.h"
 #include "core/debug.h"
 
-/* global variables */
-extern FILE *lcd;
-extern uint8_t back_light;
-
 /* macros for defining the data pins as input or output */
 #define DATA_OUTPUT() do { \
 			  DDR_CONFIG_OUT(HD44780_SER_D); \
 			 } while (0);
 
 #define CTRL_OUTPUT() do { \
-			  DDR_CONFIG_OUT(HD44780_EN); \
+			  DDR_CONFIG_OUT(HD44780_EN1); \
 			  DDR_CONFIG_OUT(HD44780_SER_CLK); \
 			 } while (0);
 
@@ -65,21 +61,21 @@ void noinline shift_data_out(uint8_t byte)
     }
 }
 
-uint8_t noinline clock_rw(uint8_t read)
+uint8_t noinline clock_rw(uint8_t read,uint8_t en)
 {
     /* set EN high, wait for more than 450 ns */
-    PIN_SET(HD44780_EN);
+    PIN_SET(HD44780_EN1);
 
     /* make sure that we really wait for more than 450 ns... */
     _delay_us(1);
 
     /* set EN low */
-    PIN_CLEAR(HD44780_EN);
+    PIN_CLEAR(HD44780_EN1);
 
     return 0;
 }
 
-void noinline output_nibble(uint8_t rs, uint8_t nibble)
+void noinline output_nibble(uint8_t rs, uint8_t nibble,uint8_t en)
 {
     uint8_t data = 0;
     //Soll ins Seuer oder Datenregister geschrieben werden?
@@ -95,7 +91,7 @@ void noinline output_nibble(uint8_t rs, uint8_t nibble)
     shift_data_out(data);
 
     /* toggle EN */
-    clock_write();
+    clock_write(1);
 }
 
 void hd44780_backlight(uint8_t state)
@@ -113,7 +109,7 @@ void noinline hd44780_hw_init(void)
 {
     CTRL_OUTPUT();
     PIN_CLEAR(HD44780_SER_CLK);
-    PIN_CLEAR(HD44780_EN);
+    PIN_CLEAR(HD44780_EN1);
 
     PIN_CLEAR(HD44780_SER_D);
     DATA_OUTPUT();

@@ -24,20 +24,12 @@ ifdef(`conf_STATUSLED_NETLINK', `dnl
 pin(STATUSLED_NETLINK, PA2, OUTPUT)
 ')dnl
 
-ifdef(`conf_STATUSLED_TX', `dnl
-pin(STATUSLED_TX, PD6, OUTPUT)
-')dnl
-
-ifdef(`conf_STATUSLED_RX', `dnl
-pin(STATUSLED_RX, PD7, OUTPUT)
-')dnl
-
 ifdef(`conf_RFM12', `
   /* port the rfm12 module CS is attached to */
-  pin(SPI_CS_RFM12, SPI_CS_HARDWARE)
+  pin(SPI_CS_RFM12_0, SPI_CS_HARDWARE)
   /* port the LEDS for rfm12 txrx attached to */
-  ifdef(`conf_STATUSLED_TX', `pin(RFM12_TX_PIN, STATUSLED_TX)')
-  ifdef(`cong_STATUSLED_RX', `pin(RFM12_RX_PIN, STATUSLED_RX)')
+  ifdef(`conf_STATUSLED_TX', `pin(STATUSLED_RFM12_TX, PD6)')
+  ifdef(`cong_STATUSLED_RX', `pin(STATUSLED_RFM12_RX, PD7)')
 
   RFM12_USE_INT(0)
 ')
@@ -45,13 +37,13 @@ ifdef(`conf_RFM12', `
 ifdef(`conf_ZBUS', `dnl
   /* port config for zbus */
   pin(ZBUS_RXTX_PIN, PD2)
-  pin(ZBUS_TX_PIN, STATUSLED_TX)
-  pin(ZBUS_RX_PIN, STATUSLED_RX)
+  pin(STATUSLED_ZBUS_TX, PD6)
+  pin(STATUSLED_ZBUS_RX, PD7)
 ')
 
 ifdef(`conf_HD44780', `dnl
   pin(HD44780_RS, PD0)
-  pin(HD44780_EN, PD1)
+  pin(HD44780_EN1, PD1)
   pin(HD44780_D4, PD4)
   pin(HD44780_D5, PD5)
   pin(HD44780_D6, PD6)

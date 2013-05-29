@@ -7,11 +7,16 @@ RM = rm -f
 AVRDUDE = avrdude
 AVRDUDE_BAUDRATE = 115200
 AWK = gawk
-M4 = m4
 
-### use GNU sed from macports instead of BSD sed on MacOS X
-SED = $(shell if [ x"$$OSTYPE" = x"darwin10.0" ]; then echo gsed; \
-	else echo sed; fi)
+### use GNU m4 and GNU sed on FreeBSD
+ifeq ($(shell uname),FreeBSD)
+M4 = gm4
+SED = gsed
+else
+M4 = m4
+### use GNU sed from macports instead of BSD sed on MacOS X 
+SED = $(shell [ x"`uname`" = x"Darwin" ] && echo g)sed
+endif 
 
 HOSTCC := gcc
 export HOSTCC
@@ -21,7 +26,7 @@ export MAKE
 # include user's config.mk file
 
 # By now we don't generate an empty example config.mk any longer,
-# since must stuff can be controlled via menuconfig finally ...
+# since most stuff can be controlled via menuconfig finally ...
 -include $(TOPDIR)/config.mk
 
 ##############################################################################
@@ -39,7 +44,11 @@ endif # MAKECMDGOALS!=menuconfig
 endif # MAKECMDGOALS!=mrproper
 endif # MAKECMDGOALS!=clean
 
-CFLAGS ?= -Wall -W -Wno-unused-parameter -Wno-sign-compare
+ifneq ($(VERBOSE),y)
+CFLAGS ?= -Wall -W -Wno-unused-parameter -Wno-sign-compare -Wno-char-subscripts
+else
+CFLAGS ?= -Wall -W -Wno-unused-parameter -Wshadow -Wpointer-arith -Wno-cast-qual -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Winline -Wbad-function-cast -Wsign-compare -Wnested-externs
+endif
 
 ifeq ($(ARCH_HOST),y)
   CC=gcc
@@ -52,9 +61,7 @@ ifeq ($(ARCH_HOST),y)
 
   CPPFLAGS += -I$(TOPDIR)
   CFLAGS += -ggdb -O0 -std=gnu99
-
 else
-
   CC=avr-gcc
   AR=avr-ar
   OBJCOPY = avr-objcopy
@@ -69,21 +76,24 @@ else
 
   # flags for the linker
   LDFLAGS += -mmcu=$(MCU)
-
 endif
 
 # remove all unused code and data during linking
 CFLAGS += -fdata-sections -ffunction-sections
-LDFLAGS += -Wl,--gc-sections
+LDFLAGS += -Wl,--gc-sections,--relax
 
-ifeq ($(BOOTLOADER_SUPPORT),y)
-ifeq ($(atmega128),y)
-LDFLAGS += -Wl,--section-start=.text=0x1E000
-else
-LDFLAGS += -Wl,--section-start=.text=0xE000
+# reduce memory usage
+CFLAGS += -funsigned-char
+CFLAGS += -funsigned-bitfields
+CFLAGS += -fpack-struct
+CFLAGS += -fshort-enums
+
+ifneq ($(ARCH_HOST),y)
+  CFLAGS += -mcall-prologues
 endif
 
-CFLAGS  += -mcall-prologues
+ifeq ($(BOOTLOADER_SUPPORT),y)
+LDFLAGS += -Wl,--section-start=.text=$(BOOTLOADER_START_ADDRESS)
 endif
 
 

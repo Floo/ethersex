@@ -184,7 +184,7 @@ vfs_sd_open (const char *name)
 uint8_t
 vfs_sd_mkdir_recursive (const char *path)
 {
-  struct fat_dir_entry_struct handle = { 0 };
+  struct fat_dir_entry_struct handle = { .attributes = FAT_ATTRIB_DIR };
   handle.attributes = FAT_ATTRIB_DIR;
 
  recurse_loop:
@@ -297,4 +297,18 @@ vfs_sd_umount (void)
     sd_active_partition = NULL;
   }
 }
+
+void vfs_sd_ping_read_periodic(void)
+{
+   if (vfs_sd_ping ()) {
+       SDDEBUG("sd_ping failed, eeek.  card removed?\n");
+       vfs_sd_umount ();
+   }
+}
 #endif  /* SD_PING_READ */
+
+/*
+  -- Ethersex META --
+  header(hardware/storage/sd_reader/vfs_sd.h)
+  ifdef(`conf_SD_PING_READ', `timer(500, `vfs_sd_ping_read_periodic()')')
+*/

@@ -27,10 +27,6 @@
 #include "config.h"
 #include "core/debug.h"
 
-/* global variables */
-extern FILE *lcd;
-extern uint8_t back_light;
-
 /* macros for defining the data pins as input or output */
 #define _DATA_INPUT(a)  PIN_CLEAR(HD44780_D ## a); \
 						DDR_CONFIG_IN(HD44780_D ## a);
@@ -47,27 +43,57 @@ extern uint8_t back_light;
 						  DDR_CONFIG_OUT(HD44780_D6); \
 						  DDR_CONFIG_OUT(HD44780_D7); \
 						 } while (0);
+
+#ifdef HD44780_MULTIENSUPPORT
 #ifdef HAVE_HD44780_RW 
 #define CTRL_OUTPUT() do { \
-						  DDR_CONFIG_OUT(HD44780_EN); \
+						  DDR_CONFIG_OUT(HD44780_EN1); \
+						  DDR_CONFIG_OUT(HD44780_EN2); \
 						  DDR_CONFIG_OUT(HD44780_RS); \
 						  DDR_CONFIG_OUT(HD44780_RW); \
 						 } while (0);
 #else 
 #define CTRL_OUTPUT() do { \
-						  DDR_CONFIG_OUT(HD44780_EN); \
+						  DDR_CONFIG_OUT(HD44780_EN1); \
+						  DDR_CONFIG_OUT(HD44780_EN2); \
 						  DDR_CONFIG_OUT(HD44780_RS); \
 						 } while (0);
 #endif
+#endif
 
-
-uint8_t noinline clock_rw(uint8_t read)
+#ifndef HD44780_MULTIENSUPPORT
+#ifdef HAVE_HD44780_RW 
+#define CTRL_OUTPUT() do { \
+						  DDR_CONFIG_OUT(HD44780_EN1); \
+						  DDR_CONFIG_OUT(HD44780_RS); \
+						  DDR_CONFIG_OUT(HD44780_RW); \
+						 } while (0);
+#else 
+#define CTRL_OUTPUT() do { \
+						  DDR_CONFIG_OUT(HD44780_EN1); \
+						  DDR_CONFIG_OUT(HD44780_RS); \
+						 } while (0);
+#endif
+#endif
+#ifdef HD44780_MULTIENSUPPORT
+ #ifndef HD44780_EN1
+	#define HD44780_EN1 HD44870_EN
+ #endif
+#endif
+uint8_t noinline clock_rw(uint8_t read, uint8_t en)
 {
     uint8_t data = 0;
 
     /* set EN high, wait for more than 450 ns */
-    PIN_SET(HD44780_EN);
-
+#ifdef HD44780_MULTIENSUPPORT
+    if (en == 1)
+	PIN_SET(HD44780_EN1);
+    else if (en == 2)
+	PIN_SET(HD44780_EN2);
+    
+#else
+    PIN_SET(HD44780_EN1);
+#endif
     /* make sure that we really wait for more than 450 ns... */
     _delay_us(1);
 
@@ -80,12 +106,19 @@ uint8_t noinline clock_rw(uint8_t read)
     }
 
     /* set EN low */
-    PIN_CLEAR(HD44780_EN);
 
+#ifdef HD44780_MULTIENSUPPORT
+    if (en == 1)
+    PIN_CLEAR(HD44780_EN1);
+    else if (en == 2)
+    PIN_CLEAR(HD44780_EN2);
+#else
+    PIN_CLEAR(HD44780_EN1);
+#endif
     return data;
 }
 
-void noinline output_nibble(uint8_t rs, uint8_t nibble)
+void noinline output_nibble(uint8_t rs, uint8_t nibble, uint8_t en)
 {
 /* switch to write operation and set rs */
 #ifdef HAVE_HD44780_RW
@@ -113,11 +146,11 @@ void noinline output_nibble(uint8_t rs, uint8_t nibble)
     DATA_OUTPUT();
 
     /* toggle EN */
-    clock_write();
+    clock_write(en);
 }
 
 #ifdef HD44780_READBACK
-uint8_t noinline input_nibble(uint8_t rs)
+uint8_t noinline input_nibble(uint8_t rs, uint8_t en)
 {
     /* configure data pins as input */
     DATA_INPUT();
@@ -130,7 +163,7 @@ uint8_t noinline input_nibble(uint8_t rs)
     if (rs)
         PIN_SET(HD44780_RS);
 
-    uint8_t data = clock_read();
+    uint8_t data = clock_read(en);
 
     /* reconfigure data pins as output */
     DATA_OUTPUT();
@@ -145,6 +178,12 @@ uint8_t noinline input_nibble(uint8_t rs)
 void hd44780_backlight(uint8_t state)
 {
     back_light = state;
+#ifdef HD44780_BACKLIGHT_SUPPORT
+    if (back_light)
+        PIN_SET(HD44780_BL);
+    else
+        PIN_CLEAR(HD44780_BL);
+#endif
 }
 
 void noinline hd44780_hw_init(void)
@@ -156,7 +195,13 @@ void noinline hd44780_hw_init(void)
 #endif
 
     PIN_CLEAR(HD44780_RS);
-    PIN_CLEAR(HD44780_EN);
+#ifndef HD44780_MULTIENSUPPORT
+    PIN_CLEAR(HD44780_EN1);
+#endif
+#ifdef HD44780_MULTIENSUPPORT
+    PIN_CLEAR(HD44780_EN1);
+    PIN_CLEAR(HD44780_EN2);
+#endif
 #ifdef HAVE_HD44780_RW
     PIN_CLEAR(HD44780_RW);
 #endif
@@ -165,4 +210,8 @@ void noinline hd44780_hw_init(void)
     PIN_CLEAR(HD44780_D6);
     PIN_CLEAR(HD44780_D7);
     DATA_OUTPUT();
+
+#ifdef HD44780_BACKLIGHT_SUPPORT
+    PIN_CLEAR(HD44780_BL);
+#endif
 }

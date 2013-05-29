@@ -38,12 +38,12 @@ int16_t parse_cmd_lcd_clear(char *cmd, char *output, uint16_t len)
 	{
 		uint8_t line = atoi(cmd);
 
-        if (line > 3)
+        if (line > (LCD_LINES - 1) )
             return ECMD_ERR_PARSE_ERROR;
 
         hd44780_goto(line, 0);
-        for (uint8_t i = 0; i < 20; i++)
-            fputc(' ', lcd);
+        for (uint8_t i = 0; i < LCD_CHAR_PER_LINE; i++)
+            fputc(' ', &lcd);
         hd44780_goto(line, 0);
 
         return ECMD_FINAL_OK;
@@ -59,7 +59,7 @@ int16_t parse_cmd_lcd_clear(char *cmd, char *output, uint16_t len)
 int16_t parse_cmd_lcd_write(char *cmd, char *output, uint16_t len)
 {
     if (strlen(cmd) > 1) {
-        fputs(cmd+1, lcd);
+        fputs(cmd+1, &lcd);
         return ECMD_FINAL_OK;
     } else
         return ECMD_ERR_PARSE_ERROR;
@@ -71,11 +71,11 @@ int16_t parse_cmd_lcd_goto(char *cmd, char *output, uint16_t len)
 	uint8_t line, pos = 0;
 
 	/* Skip leading spaces. */
-	while(*cmd == 32) cmd ++;
+	while(*cmd == ' ') cmd ++;
 
 	/* Seek space (pos argument), chop and atoi to `pos'.  */
 	char *p = cmd;
-	while(*p && *p != 32) p ++;
+	while(*p && *p != ' ') p ++;
 	if(*p)
 	{
 		*p = 0;
@@ -92,13 +92,11 @@ int16_t parse_cmd_lcd_goto(char *cmd, char *output, uint16_t len)
 	if(!ret) return ECMD_ERR_PARSE_ERROR;
 #endif
 
-    if (line > 3)
+    if (line > (LCD_LINES - 1))
 		return ECMD_ERR_PARSE_ERROR;
 
-	if (LO8(pos) >= 20)
-		pos = 20;
-
-	debug_printf("going to line %u, pos %u\n", line, pos);
+	if (LO8(pos) > LCD_CHAR_PER_LINE)
+		pos = LCD_CHAR_PER_LINE;
 
 	hd44780_goto(LO8(line), LO8(pos));
 	return ECMD_FINAL_OK;
@@ -109,13 +107,16 @@ int16_t parse_cmd_lcd_char(char *cmd, char *output, uint16_t len)
   if (strlen(cmd) < 26) 
     return ECMD_ERR_PARSE_ERROR;
   uint8_t n_char, data[8];
-  int ret = sscanf_P(cmd, PSTR("%u %x %x %x %x %x %x %x %x"), &n_char,
+  int ret = sscanf_P(cmd, PSTR("%hhu %hhx %hhx %hhx %hhx %hhx %hhx %hhx %hhx"), &n_char,
                      &data[0], &data[1], &data[2], &data[3],
                      &data[4], &data[5], &data[6], &data[7]);
 
   if (ret == 9) {
-    hd44780_define_char(n_char, data);
-    return ECMD_FINAL_OK;
+    hd44780_define_char(n_char, data,1);
+#ifdef HD44780_MULTIENSUPPORT
+    hd44780_define_char(n_char, data,2);
+#endif
+  return ECMD_FINAL_OK;
   } else
     return ECMD_ERR_PARSE_ERROR;
 }
@@ -126,11 +127,11 @@ int16_t parse_cmd_lcd_init(char *cmd, char *output, uint16_t len)
 
 #ifdef TEENSY_SUPPORT
 	/* Skip leading spaces. */
-	while(*cmd == 32) cmd ++;
+	while(*cmd == ' ') cmd ++;
 
 	/* Seek space (blink argument), chop and atoi to `blink'.  */
 	char *p = cmd;
-	while(*p && *p != 32) p ++;
+	while(*p && *p != ' ') p ++;
 	if(!*p)
 		return ECMD_ERR_PARSE_ERROR; /* Required argument `blink' missing. */
 
@@ -138,13 +139,13 @@ int16_t parse_cmd_lcd_init(char *cmd, char *output, uint16_t len)
 	blink = atoi(p + 1);
 	cursor = atoi(cmd);
 #else
-	int ret = sscanf_P(cmd, PSTR("%u %u"), &cursor, &blink);
-	if(ret == 2)
+	int ret = sscanf_P(cmd, PSTR("%hhu %hhu"), &cursor, &blink);
+	if(ret != 2)
 		return ECMD_ERR_PARSE_ERROR;
 #endif
 
     hd44780_init();
-    hd44780_config(cursor, blink);
+    hd44780_config(cursor, blink,1);
     return ECMD_FINAL_OK;
 }
 
@@ -154,9 +155,19 @@ int16_t parse_cmd_lcd_shift(char *cmd, char *output, uint16_t len)
     return ECMD_ERR_PARSE_ERROR;
 
   if (!strncmp_P(cmd + 1, PSTR("right"), 5))
-    hd44780_shift(1);
+  { 	
+    hd44780_shift(1,1);
+#ifdef HD44780_MULTIENSUPPORT
+    hd44780_shift(1,2);
+#endif
+  }
   else if (!strncmp_P(cmd + 1, PSTR("left"), 4)) 
-    hd44780_shift(0);
+  {
+    hd44780_shift(0,1);
+#ifdef HD44780_MULTIENSUPPORT
+    hd44780_shift(0,2);
+#endif
+  }
   else
     return ECMD_ERR_PARSE_ERROR;
 

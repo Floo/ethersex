@@ -28,6 +28,7 @@
 #include "network.h"
 #include "config.h"
 #include "core/eeprom.h"
+#include "core/mbr.h"
 #include "protocols/uip/ipv6.h"
 #include "protocols/zbus/zbus.h"
 
@@ -40,13 +41,7 @@
 #include "services/tftp/tftp.h"
 #include "hardware/ethernet/enc28j60.h"
 
-#ifdef BOOTLOADER_SUPPORT
-extern uint8_t bootload_delay;
-#endif
-
 extern void ethersex_meta_netinit (void);
-
-
 
 void
 network_init(void)
@@ -110,18 +105,22 @@ network_init(void)
 #   endif
 
 #   if defined(IPV6_STATIC_SUPPORT) && defined(TFTPOMATIC_SUPPORT)
-    const unsigned char *filename = CONF_TFTP_IMAGE;
+    const char *filename = CONF_TFTP_IMAGE;
     set_CONF_TFTP_IP(&ip);
-
-    tftp_fire_tftpomatic(&ip, filename);
-    bootload_delay = CONF_BOOTLOAD_DELAY;
+#ifdef MBR_SUPPORT
+    if (mbr.bootloader == 1)
+#endif
+    {
+      tftp_fire_tftpomatic(&ip, filename, 1);
+      bootload_delay = CONF_BOOTLOAD_DELAY;
+    }
 #   endif /* IPV6_STATIC_SUPPORT && TFTPOMATIC_SUPPORT */
 
 
 #   elif !defined(ROUTER_SUPPORT) /* and not ETHERNET_SUPPORT */
     /* Don't allow for eeprom-based configuration of rfm12/zbus IP address,
        mainly for code size reasons. */
-    set_CONF_ETHERRAPE_IP(&ip);
+    set_CONF_ETHERSEX_IP(&ip);
     uip_sethostaddr(&ip);
 
 #   endif /* not ETHERNET_SUPPORT and not ROUTER_SUPPORT */
@@ -138,6 +137,11 @@ network_init(void)
 #   else
     uip_arp_init();
 #   endif
+#   else /* ETHERNET_SUPPORT */
+    /* set at least fixed default gateway address
+     * to allow multi stack routing */
+    set_CONF_ETHERSEX_GATEWAY(&ip);
+    uip_setdraddr(&ip);
 #   endif  /* ETHERNET_SUPPORT */
 
 }

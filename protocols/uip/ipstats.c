@@ -33,15 +33,25 @@
 int16_t parse_cmd_ipstats(char *cmd, char *output, uint16_t len)
 {
   /* trick: use bytes on cmd as "connection specific static variables" */
-  if (cmd[0] != 23) {	/* indicator flag: real invocation:  0 */
-    cmd[0] = 23;	/*                 continuing call: 23 */
-    cmd[1] = 0;		/* counter for network interface */
-    cmd[2] = 0;		/* counter for output lines for an interface */
+  if (cmd[0] != ECMD_STATE_MAGIC) {	/* indicator flag: real invocation:  0 */
+    cmd[0] = ECMD_STATE_MAGIC;		/*                 continuing call: 23 */
+    cmd[1] = 0;				/* counter for network interface */
+    cmd[2] = 0;				/* counter for output lines for an interface */
   }
-  uint8_t tmp;
-#ifdef MULTISTACK_SUPPORT
-  uip_stack_set_active(cmd[1]);
-#endif 
+  uint16_t tmp;
+#ifdef UIP_MULTI_STACK
+  #undef uip_hostaddr
+  #define uip_hostaddr (* (uip_stacks[cmd[1]].uip_hostaddr))
+
+  #undef uip_netmask
+  #define uip_netmask (* (uip_stacks[cmd[1]].uip_netmask))
+
+  #undef uip_prefix_len
+  #define uip_prefix_len (* (uip_stacks[cmd[1]].uip_prefix_len))
+
+  #undef uip_stat
+  #define uip_stat (* (uip_stacks[cmd[1]].uip_stat))
+#endif /* UIP_MULTI_STACK */
 
   enum {
     INTERFACE,

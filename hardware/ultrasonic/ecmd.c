@@ -33,21 +33,26 @@
 #ifdef SRF05_SUPPORT
 int16_t parse_cmd_srf05_command(char *cmd, char *output, uint16_t len) 
 {
-  uint16_t distance = srf05_get(cmd, output, len);
+  uint16_t distance = srf05_get();
  
-  if (distance < 0 ) {
+  if (distance == 0 ) {
 	return ECMD_ERR_PARSE_ERROR;
   }
-
+#if !SRF05_FAKTOR
+#error SRF05_FAKTOR has to be non-zero!
+#endif
  // only metric values so far
-  return ECMD_FINAL(snprintf_P(output, len, PSTR("%i"), distance / 58 ));
+ // metric divisor is 58 for cm
+ // imperial divisor is 148 for inches
+  return ECMD_FINAL(snprintf_P(output, len, PSTR("%i"), distance / SRF05_FAKTOR ));
 }
 #endif /* SRF05_SUPPORT */
 
 /*
   -- Ethersex META --
   block([[Ultrasonic]])
+  header(hardware/ultrasonic/ultrasonic.h)
   ecmd_ifdef(SRF05_SUPPORT)
-    ecmd_feature(srf05_command, "srf05 ",, Get SRF05 Data)
+    ecmd_feature(srf05_command, "srf05",, Read SRF05 measurement)
   ecmd_endif()
 */

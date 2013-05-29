@@ -21,20 +21,23 @@
  */
 
 #include <stdint.h>
+#include "config.h"
 #include "core/global.h"
+#include "protocols/uip/uip.h"
 #include "protocols/ecmd/ecmd-base.h"
 
-int16_t parse_cmd_bootloader(char *cmd, char *output, uint16_t len)
+int16_t
+parse_cmd_bootloader(char *cmd, char *output, uint16_t len)
 {
-    (void) cmd;
-    (void) output;
-    (void) len;
+  (void) cmd;
+  (void) output;
+  (void) len;
 
-    status.request_bootloader = 1;
+  status.request_bootloader = 1;
 #   ifdef UIP_SUPPORT
-    uip_close();
+  uip_close();
 #   endif
-    return ECMD_FINAL_OK;
+  return ECMD_FINAL_OK;
 }
 
 

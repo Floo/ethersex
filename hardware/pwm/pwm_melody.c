@@ -33,13 +33,22 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/delay.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "config.h"
-#include "core/debug.h"
 
-#ifdef PWM_MELODY_SUPPORT
+#include "pwm_common.h"
 #include "pwm_melody.h"
-#include "entchen.h"
+#include "protocols/ecmd/ecmd-base.h"
+
+#ifdef ENTCHEN_PWM_MELODY_SUPPORT
+ #include "entchen.h"
+#endif /* ENTCHEN_PWM_MELODY_SUPPORT */
+
+#ifdef TETRIS_PWM_MELODY_SUPPORT
+ #include "tetris.h"
+#endif /* TETRIS_PWM_MELODY_SUPPORT */
 
 uint8_t pwm_melody_tone=0;
 uint16_t pwm_melody_i=0;
@@ -68,20 +77,27 @@ const uint8_t sinewave[1][256] PROGMEM=
 }
 };
 
+
 #define songlength(size) (sizeof(size)/sizeof(struct notes_duration_t))
 
 struct song_t songs[] PROGMEM = {
 // { name,     delay, transpose, struct of notes, # of notes }
+#ifdef ENTCHEN_PWM_MELODY_SUPPORT
   { "entchen", 10, 4, entchen_notes, songlength(entchen_notes) }, 
+#endif /* ENTCHEN_PWM_MELODY_SUPPORT */
+#ifdef TETRIS_PWM_MELODY_SUPPORT
+  { "tetris", 30, 1, tetris_notes, songlength(tetris_notes) }, 
+#endif /* TETRIS_PWM_MELODY_SUPPORT */
 //  { "newsong", 40, 1, newsong_notes, songlength(newsong_notes) }
 };
 
-#define MAX_PWM_SONGS sizeof(songs)/sizeof(struct song_t)
+#define MAX_PWM_SONGS (sizeof(songs)/sizeof(struct song_t))
 
 // Interrupt-Funktion, die den "Zeiger" hochzählt
 // je nach gewünschter Frequenz wird "scale" verändert, 
 // und somit die Sinuswelle schneller (hoher ton) 
 // oder langsamer (tiefer Ton) abgelaufen
+
 ISR(_PWM_MELODY_COMP){
 	_PWM_MELODY_OCR=pgm_read_byte(&sinewave[pwm_melody_tone][(pwm_melody_i>>8)]);
    	pwm_melody_i += pwm_melody_scale;
@@ -92,18 +108,19 @@ pwm_melody_init(uint8_t songnr)  // Play it once, Sam!
 {
 	struct song_t song;
 	struct notes_duration_t notes;
-	if (songnr >=MAX_PWM_SONGS)
+	if (songnr >=MAX_PWM_SONGS) // causes error if no songs activated
 	  songnr=0;
 	memcpy_P(&song, &songs[songnr], sizeof(struct song_t));
 
-#ifdef DEBUG_PWM
-    	debug_printf("PWM title: '%s', d: %i, s %i: trans: x%i, max: %i\n", song.title, song.delay, song.size, song.transpose, MAX_PWM_SONGS);
-#endif
+    PWMDEBUG("melody: title: '%s', delay: %i, size: %i: transpose: x%i, nr of songs: %i\n", song.title, song.delay, song.size, song.transpose, MAX_PWM_SONGS);
 // see example at http://www.infolexikon.de/blog/atmega-music/
 
 	// Anfangswert der PWM
 	_PWM_MELODY_OCR=0x80;
 	
+    //DDR_CONFIG_OUT(PWMSOUND); //	allways PD7 ??? fix me!
+	DDRD |= (1<<7);
+
 	//Output compare OCxA 8 bit non inverted PWM
 	// Timer Counter Control Register!
 	// Bit:   7	  6	 5	4     3     2     1     0
@@ -121,7 +138,7 @@ pwm_melody_init(uint8_t songnr)  // Play it once, Sam!
 	// Hier:  0	0      0      1     0      0     0      0
 	_PWM_MELODY_TIMSK |= (1 << _PWM_MELODY_OCIE); // 0x10
 	//enable global interrupts
-	//sei();
+	sei();
 
 	// durch das Noten-Array laufen und nacheinander
 	// die Töne in jeweiliger Länge abspielen
@@ -132,11 +149,10 @@ pwm_melody_init(uint8_t songnr)  // Play it once, Sam!
 		pwm_melody_scale = song.transpose * notes.note;
 
 		uint16_t delay = notes.duration * 10 * song.delay / 8 ;
-#ifdef DEBUG_PWM
-    	debug_printf("%3i. note: %4i, dur: %3i, i: %5i, scale: %5i, delay: %5i\n", y, notes.note, notes.duration, pwm_melody_i, pwm_melody_scale, delay);
-#endif
+    	PWMDEBUG("%3i. note: %4i, dur: %3i, i: %5i, scale: %5i, delay: %5i\n", y, notes.note, notes.duration, pwm_melody_i, pwm_melody_scale, delay);
 
-		_delay_ms(delay);
+		while(delay--)
+			_delay_ms(1);
 		// Interrupt kurz ausschalten, gibt kurze Pause
 		// so werden die Töne getrennt
 		cli();
@@ -145,5 +161,17 @@ pwm_melody_init(uint8_t songnr)  // Play it once, Sam!
 		sei();
 	}
 }
-#endif // PWM_MELODY_SUPPORT
 
+int16_t
+parse_cmd_pwm_melody_play(char *cmd, char *output, uint16_t len)
+{
+  uint8_t song = atoi(cmd);
+  pwm_melody_init(song);
+  return ECMD_FINAL_OK;
+}
+
+/*
+  -- Ethersex META --
+  block([[Sound]]/Melody support)
+  ecmd_feature(pwm_melody_play, "pwm melody", [NUMBER], Play melody)
+*/
