@@ -32,7 +32,7 @@
 
 #ifdef I2C_ADS1015_SUPPORT
 
-uint8_t i2c_ads1015_writeReg(uint8_t address, uint8_t reg,  uint16_t data)
+uint8_t i2c_ads1015_write_reg(uint8_t address, uint8_t reg,  uint16_t data)
 {
 	uint8_t ret = 0xFF;
 	if (!i2c_master_select(address, TW_WRITE)) goto end;
@@ -55,24 +55,10 @@ uint8_t i2c_ads1015_writeReg(uint8_t address, uint8_t reg,  uint16_t data)
 #endif
 	ret = 0;
 	end: i2c_master_stop();
-	if (ret == 0){
-		ret = i2c_ads1015_setConfigToConv();
-	}
 	return ret;
 }
 
-uint8_t i2c_ads1015_setConfigToConv(uint8_t address)
-{
-	uint8_t ret = 0xFF;
-	if (!i2c_master_select(address, TW_WRITE)) goto end;
-	TWDR = ADS1015_CONV;
-	if (i2c_master_transmit_with_ack() != TW_MT_DATA_ACK) goto end;
-	ret = 0;
-	end: i2c_master_stop();
-	return ret;
-}
-
-uint8_t i2c_ads1015_readReg(uint8_t address, uint8_t reg, uint16_t *data)
+uint8_t i2c_ads1015_read_reg(uint8_t address, uint8_t reg, uint16_t *data)
 {
 	uint8_t ret = 0xFF;
 	uint8_t tmp[2];
@@ -89,13 +75,9 @@ uint8_t i2c_ads1015_readReg(uint8_t address, uint8_t reg, uint16_t *data)
 #ifdef DEBUG_I2C
 	debug_printf("I2C: i2c_ads1015_readReg: Reg 0x%X: MSB 0x%X, LSB 0x%X\n", reg, tmp[1], tmp[0]);
 #endif
-
 	ret = 0;
 	*data = ((tmp[1] << 8) | tmp[0]);
 	end: i2c_master_stop();
-	if (ret == 0){
-		ret = i2c_ads1015_setConfigToConv();
-	}	
 	return ret;
 }
 
@@ -103,22 +85,75 @@ uint8_t i2c_ads1015_readReg(uint8_t address, uint8_t reg, uint16_t *data)
 uint16_t i2c_ads1015_read(uint8_t address)
 {
 	uint8_t ret = 0xFF;
-	uint16_t tmp;
+	uint16_t result;
+	ret = i2c_ads1015_read_reg(address, ADS1015_CONV, &result);
 	
-	if (!i2c_master_select(address, TW_READ)) goto end;
-	if (i2c_master_transmit_with_ack() != TW_MR_DATA_ACK) goto end;
-	tmp = TWDR << 4; //MSB
-	if (i2c_master_transmit() != TW_MR_DATA_NACK) goto end;
-	tmp = tmp | (TWDR >> 4); //LSB
-
-	ret = 0;
-	end: if (ret == 0) {
-		#ifdef DEBUG_I2C
-			debug_printf("I2C: ADS1015 read value 0x%X\n", tmp);
-		#endif
-		return tmp;
+	if (ret == 0)
+	{
+		return (result >> 4);
 	}else{
 		return 0xFFFF;
+	}
+}
+
+//check if conversion finished
+uint8_t i2c_ads1015_conversion_ready(uint8_t address)
+{
+	uint16_t data;
+	i2c_ads1015_get_config(address, &data);
+	return(data & ADS1015_OS); 
+}
+
+//start conversion
+uint8_t i2c_ads1015_start_conversion(uint8_t address, uint8_t input, uint8_t gain)
+{
+	uint8_t config;
+
+	if(i2c_ads1015_conversion_ready(address))
+	{	
+		config = ADS1015_REG_CONFIG_DEFAULT | ADS1015_REG_CONFIG_OS;
+		switch(input)
+		{
+			case (0):
+				config |= ADS1015_REG_CONFIG_MUX_AIN0;
+				break;
+			case (1):
+				config |= ADS1015_REG_CONFIG_MUX_AIN1;
+				break;
+			case (2):
+				config |= ADS1015_REG_CONFIG_MUX_AIN2;
+				break;
+			case (3):
+				config |= ADS1015_REG_CONFIG_MUX_AIN3;
+				break;
+		}
+		switch (gain)
+		{
+			case (0):
+				config |= ADS1015_REG_CONFIG_PGA_6_144;
+				break;
+			case (1):
+				config |= ADS1015_REG_CONFIG_PGA_4_096;
+				break;
+			case (2):
+				config |= ADS1015_REG_CONFIG_PGA_2_048;
+				break;
+			case (3):
+				config |= ADS1015_REG_CONFIG_PGA_1_024;
+				break;
+			case (4):
+				config |= ADS1015_REG_CONFIG_PGA_0_512;
+				break;		
+			case (5):
+				config |= ADS1015_REG_CONFIG_PGA_0_256;
+				break;				
+		}
+		i2c_ads1015_set_config(address, config);
+		return ADS_1015_OK;
+	}
+	else
+	{
+		return ADS1015_ERROR;
 	}
 }
 

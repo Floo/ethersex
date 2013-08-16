@@ -23,28 +23,47 @@
 #ifndef _I2C_ADS1015_H
 #define _I2C_ADS1015_H
 
-#define I2C_SLA_ADS1015 0x00
+#define ADS1015_OK = 1
+#define ADS1015_ERROR = 0
+
+#define I2C_SLA_ADS1015 0x90
 
 //-- Register --
-#define ADS1015_CONV     0x0
-#define ADS1015_CONFIG   0x1
-#define ADS1015_THR_L    0x2
-#define ADS1015_THR_H    0x3
+#define ADS1015_CONV     0x00
+#define ADS1015_CONFIG   0x01
+#define ADS1015_THR_L    0x02
+#define ADS1015_THR_H    0x03
+
+//-- Bitmask --
+#define ADS1015_REG_CONFIG_OS       0x8000
+#define ADS1015_REG_CONFIG_MUX_AIN0 0x4000
+#define ADS1015_REG_CONFIG_MUX_AIN1 0x5000
+#define ADS1015_REG_CONFIG_MUX_AIN2 0x6000
+#define ADS1015_REG_CONFIG_MUX_AIN3 0x7000
+#define ADS1015_REG_CONFIG_PGA_6_144 0x0000
+#define ADS1015_REG_CONFIG_PGA_4_096 0x0200
+#define ADS1015_REG_CONFIG_PGA_2_048 0x0400
+#define ADS1015_REG_CONFIG_PGA_1_024 0x0600
+#define ADS1015_REG_CONFIG_PGA_0_512 0x0800
+#define ADS1015_REG_CONFIG_PGA_0_256 0x0A00
+#define ADS1015_REG_CONFIG_DEFAULT  0x01C3
 
 //start communication after reset wit setConfig to initialize
 
-uint8_t i2c_ads1015_writeReg(uint8_t address, uint8_t reg,  uint16_t data);
-uint8_t i2c_ads1015_readReg(uint8_t address, uint8_t reg, uint16_t *data);
+uint8_t i2c_ads1015_write_reg(uint8_t address, uint8_t reg,  uint16_t data);
+uint8_t i2c_ads1015_read_reg(uint8_t address, uint8_t reg, uint16_t *data);
 
 //all values for Threshold-Registers right adjusted (Ranges from 0x0000 to 0x0FFF)
 //all Values read and written from/to 16 bit Registers (except Config-Register) are right shifted by 4 bits
 
-#define i2c_ads1015_setConfig(address, data) i2c_ads1015_writeReg(address, ADS1015_CONFIG, data) //write Config Register
-#define i2c_ads1015_setTHRL(address, data) i2c_ads1015_writeReg(address, ADS1015_THR_L, data) //write Low-Threshold
-#define i2c_ads1015_setTHRH(address, data) i2c_ads1015_writeReg(address, ADS1015_THR_H, data) //write Low-Threshold
-#define i2c_ads1015_getConfig(address, data) i2c_ads1015_readReg(address, ADS1015_CONFIG, pnt_data) //read Config Register
+#define i2c_ads1015_set_config(address, data) i2c_ads1015_write_reg(address, ADS1015_CONFIG, data) //write Config Register
+#define i2c_ads1015_set_THRL(address, data) i2c_ads1015_write_reg(address, ADS1015_THR_L, data) //write Low-Threshold
+#define i2c_ads1015_set_THRH(address, data) i2c_ads1015_write_reg(address, ADS1015_THR_H, data) //write Low-Threshold
+#define i2c_ads1015_get_config(address, pnt_data) i2c_ads1015_read_reg(address, ADS1015_CONFIG, pnt_data) //read Config Register
 
 //Reads the Conversion-Register and formates right adjusted (Range from 0x0000 to 0x0FFF)
 uint16_t i2c_ads1015_read(uint8_t address); //read Conversation-Register
+uint8_t i2c_ads1015_conversion_ready(uint8_t address); //check if conversion is finished
+uint8_t i2c_ads1015_start_conversion(uint8_t address, uint8_t input, uint8_t gain); //switch Mux to input and PGA to gain and start single conversion
 
 #endif /* _I2C_ADS1015_H */
