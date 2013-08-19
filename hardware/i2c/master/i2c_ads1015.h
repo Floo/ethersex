@@ -26,7 +26,7 @@
 #define ADS1015_OK 1
 #define ADS1015_ERROR 0
 
-#define I2C_SLA_ADS1015 0x90
+#define I2C_SLA_ADS1015 0x48 //same as DS1631!
 
 //-- Register --
 #define ADS1015_CONV     0x00

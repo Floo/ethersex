@@ -23,7 +23,7 @@
 #ifndef _I2C_SHT21_H
 #define _I2C_SHT21_H
 
-#define I2C_SLA_SHT21 0x80
+#define I2C_SLA_SHT21 0x40
 
 #define SHT21_OK 1
 #define SHT21_ERROR 0
