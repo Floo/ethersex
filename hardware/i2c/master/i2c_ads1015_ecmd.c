@@ -43,7 +43,7 @@ int16_t parse_cmd_i2c_ads1015_read(char *cmd, char *output, uint16_t len)
 	uint8_t cnt1 = 6;
 	uint8_t cnt2 = 5;
 	sscanf_P(cmd, PSTR("%hhu %hhu %hhu"), &adr, &input, &gain);
-	if (adr > 3)
+	if (adr > 3 || input > 3 || gain > 5 || adr < 0 || input < 0 || gain < 0)
 		return ECMD_ERR_PARSE_ERROR;
 	adr += I2C_SLA_ADS1015;
 	if(i2c_ads1015_start_conversion(adr, input, gain) == ADS1015_ERROR)

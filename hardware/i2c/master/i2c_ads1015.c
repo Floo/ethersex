@@ -99,17 +99,19 @@ uint16_t i2c_ads1015_read(uint8_t address)
 //check if conversion finished
 uint8_t i2c_ads1015_conversion_ready(uint8_t address)
 {
-	uint16_t data;
-	i2c_ads1015_get_config(address, &data);
-	return(data & ADS1015_REG_CONFIG_OS); 
+	uint16_t data = 0;
+	if(i2c_ads1015_get_config(address, &data) == 0)
+		return((data & ADS1015_REG_CONFIG_OS) >> 8); 
+	else
+		return 0;
 }
 
 //start conversion
 uint8_t i2c_ads1015_start_conversion(uint8_t address, uint8_t input, uint8_t gain)
 {
-	uint8_t config;
+	uint16_t config;
 
-	if(i2c_ads1015_conversion_ready(address))
+	if(i2c_ads1015_conversion_ready(address) != 0)
 	{	
 		config = ADS1015_REG_CONFIG_DEFAULT | ADS1015_REG_CONFIG_OS;
 		switch(input)
